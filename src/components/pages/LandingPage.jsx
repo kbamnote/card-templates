@@ -1,0 +1,186 @@
+import React, { useState, useEffect } from 'react';
+import TemplateRenderer from '../templates/TemplateRenderer';
+import TemplateSelector from '../templates/TemplateSelector';
+import { profileRead, serviceRead, galleryRead, productRead, testimonialRead } from '../../utils/Api';
+
+const LandingPage = () => {
+  const [profileData, setProfileData] = useState(null);
+  const [servicesData, setServicesData] = useState([]);
+  const [galleryData, setGalleryData] = useState([]);
+  const [productsData, setProductsData] = useState([]);
+  const [testimonialsData, setTestimonialsData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      
+      // Fetch all data in parallel
+      const [profileResponse, servicesResponse, galleryResponse, productsResponse, testimonialsResponse] = await Promise.all([
+        profileRead(),
+        serviceRead(),
+        galleryRead(),
+        productRead(),
+        testimonialRead()
+      ]);
+
+      // Process profile data
+      if (profileResponse.data.success) {
+        const profile = profileResponse.data.data;
+        setProfileData({
+          name: profile.name || '',
+          profession: profile.profession || '',
+          about: profile.about || '',
+          email: profile.userId?.email || '',
+          phone1: profile.phone1 || '',
+          phone2: profile.phone2 || '',
+          location: profile.location || '',
+          dob: profile.dob || '',
+          websiteLink: profile.websiteLink || '',
+          appLink: profile.appLink || '',
+          socialMedia: {
+            facebook: profile.socialMedia?.facebook || '',
+            instagram: profile.socialMedia?.instagram || '',
+            twitter: profile.socialMedia?.twitter || '',
+            linkedin: profile.socialMedia?.linkedin || '',
+            youtube: profile.socialMedia?.youtube || '',
+            whatsapp: profile.socialMedia?.whatsapp || ''
+          },
+          profileImg: profile.profileImg || '',
+          bannerImg: profile.bannerImg || '',
+          templateId: profile.templateId || 'template1'
+        });
+      } else {
+        setError('Failed to fetch profile data');
+        return;
+      }
+
+      // Process services data
+      if (servicesResponse.data.success) {
+        setServicesData(servicesResponse.data.data || []);
+      }
+
+      // Process gallery data - transform to match template expectations
+      if (galleryResponse.data.success) {
+        const transformedGallery = (galleryResponse.data.data || []).map(item => ({
+          src: item.imageUrl || '',
+          fallback: 'https://picsum.photos/seed/gallery/800/600'
+        }));
+        setGalleryData(transformedGallery);
+      }
+
+      // Process products data - transform to match template expectations
+      if (productsResponse.data.success) {
+        const transformedProducts = (productsResponse.data.data || []).map(item => ({
+          name: item.productName || '',
+          price: item.price ? `$${item.price.toFixed(2)}` : '',
+          img: {
+            src: item.productPhoto || '',
+            fallback: 'https://picsum.photos/seed/product/800/600'
+          },
+          details: item.details || ''
+        }));
+        setProductsData(transformedProducts);
+      }
+
+      // Process testimonials data
+      if (testimonialsResponse.data.success) {
+        setTestimonialsData(testimonialsResponse.data.data || []);
+      }
+    } catch (err) {
+      setError('Error fetching data: ' + (err.response?.data?.message || err.message));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleTemplateChange = (templateId) => {
+    console.log('Template selected:', templateId);
+    setProfileData(prev => ({
+      ...prev,
+      templateId
+    }));
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading data...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-red-500 font-medium">Error: {error}</div>
+          <button 
+            onClick={fetchData}
+            className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!profileData) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-gray-500 font-medium">No profile data found</div>
+          <button 
+            onClick={fetchData}
+            className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Combine all data for templates
+  const templateData = {
+    ...profileData,
+    services: servicesData,
+    gallery: galleryData,
+    products: productsData,
+    testimonials: testimonialsData
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 md:py-6">
+      <div className="md:max-w-6xl md:mx-auto md:px-6 lg:px-8">
+        
+        {/* Template Preview */}
+        <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+          <TemplateRenderer 
+            templateId={profileData.templateId} 
+            profileData={templateData} 
+          />
+        </div>
+        
+        {/* Template Selector */}
+        <div className="bg-white rounded-xl shadow-md p-6">
+          <TemplateSelector 
+            currentTemplate={profileData.templateId} 
+            onTemplateChange={handleTemplateChange} 
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default LandingPage;

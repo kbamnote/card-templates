@@ -1,26 +1,8 @@
 import { useState } from 'react'
-import { Instagram, Facebook, Twitter, Youtube } from 'lucide-react'
+import { Instagram, Facebook, Twitter, Youtube, Phone, Mail, MapPin, Globe, Calendar } from 'lucide-react'
+import { handleAppointmentSubmit, renderAppointmentForm } from './AppointmentUtils'
 
-function InteriorDesignTemplate() {
-  const services = [
-    { title: 'Space Planning', desc: 'Functional layouts tailored to your lifestyle.' },
-    { title: 'Color & Material', desc: 'Palette, textures, and finishes for harmony.' },
-    { title: 'Budget & Sourcing', desc: 'Curated pieces within your budget.' },
-  ]
-
-  const gallery = [
-    'https://i.redd.it/sv2pkz4h35r11.jpg',
-    'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1200&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1493666438817-866a91353ca9?q=80&w=1200&auto=format&fit=crop',
-  ]
-
-  const products = [
-    { name: 'Nadia Lounge Chair', price: '$249.00', img: 'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1200&auto=format&fit=crop' },
-    { name: 'Arlo Fabric Sofa', price: '$599.00', img: 'https://images.unsplash.com/photo-1540574163026-643ea20ade25?q=80&w=1200&auto=format&fit=crop' },
-    { name: 'Mori Coffee Table', price: '$179.00', img: 'https://images.unsplash.com/photo-1484101403633-562f891dc89a?q=80&w=1200&auto=format&fit=crop' },
-  ]
-
+function InteriorDesignTemplate({ profileData }) {
   const hours = [
     ['Saturday', '09:00 - 20:00'],
     ['Sunday', '09:00 - 20:00'],
@@ -31,15 +13,49 @@ function InteriorDesignTemplate() {
     ['Friday', '09:00 - 20:00'],
   ]
 
-  const [slot, setSlot] = useState('10:00')
+  // Use profile data or fallback to defaults
+  const services = profileData?.services || [
+    { title: 'Space Planning', desc: 'Layouts, flow optimization, and zoning.' },
+    { title: 'Color Consultation', desc: 'Palettes, materials, and finishes.' },
+    { title: 'Furniture Selection', desc: 'Procurement and placement guidance.' },
+  ]
 
-  function handleAppointment(e) {
-    e.preventDefault()
-    const form = new FormData(e.currentTarget)
-    const name = form.get('name')
-    const phone = form.get('phone')
-    const date = form.get('date')
-    alert(`Appointment booked for ${name} on ${date} at ${slot}. Contact: ${phone}`)
+  const gallery = profileData?.gallery || [
+    { src: 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/interior1/800/600' },
+    { src: 'https://images.pexels.com/photos/1571470/pexels-photo-1571470.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/interior2/800/600' },
+    { src: 'https://images.pexels.com/photos/1571471/pexels-photo-1571471.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/interior3/800/600' },
+    { src: 'https://images.pexels.com/photos/1571472/pexels-photo-1571472.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/interior4/800/600' },
+  ]
+
+  const products = profileData?.products || [
+    { name: 'Consultation Session', price: '$199.00', img: { src: 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/interior5/800/600' } },
+    { name: 'Full Design Package', price: '$1,299.00', img: { src: 'https://images.pexels.com/photos/1571470/pexels-photo-1571470.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/interior6/800/600' } },
+  ]
+
+  // Use testimonial data or fallback to defaults
+  const testimonials = profileData?.testimonials && profileData.testimonials.length > 0 
+    ? profileData.testimonials.map(t => ({
+        name: t.testimonialName || 'Anonymous',
+        role: 'Client',
+        feedback: t.feedback || 'Great service',
+        rating: 5
+      }))
+    : [
+        {
+          name: 'James Brown',
+          role: 'Homeowner',
+          feedback: 'Jeff transformed our apartment with warm tones and clever zoning. We loved the process and the result exceeded expectations.',
+          rating: 5
+        }
+      ];
+
+  const [slot, setSlot] = useState('10:00')
+  const [appointmentLoading, setAppointmentLoading] = useState(false)
+  const [appointmentMessage, setAppointmentMessage] = useState('')
+  const [appointmentError, setAppointmentError] = useState('')
+
+  async function handleAppointment(e) {
+    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot)
   }
 
   function handleContact(e) {
@@ -52,12 +68,35 @@ function InteriorDesignTemplate() {
     alert(`Message from ${name} (${email}, ${phone}): ${message}`)
   }
 
+  // Social media icons mapping
+  const socialIcons = {
+    facebook: Facebook,
+    instagram: Instagram,
+    twitter: Twitter,
+    youtube: Youtube,
+    whatsapp: Phone
+  }
+
+  // Render star ratings
+  const renderRating = (rating) => {
+    return (
+      <div className="flex">
+        {[...Array(5)].map((_, i) => (
+          <span key={i} className={i < rating ? 'text-yellow-400' : 'text-gray-300'}>
+            ★
+          </span>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-[#f5f3ed] text-[#333]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <section className="relative overflow-hidden rounded-2xl">
           <img
-            src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1600&auto=format&fit=crop"
+            src={profileData?.bannerImg || "https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1600&auto=format&fit=crop"}
+            onError={(e)=>{e.currentTarget.src='https://picsum.photos/seed/interiorhero/1600/400'}}
             alt="Interior hero"
             className="w-full h-40 sm:h-[320px] object-cover"
           />
@@ -66,19 +105,24 @@ function InteriorDesignTemplate() {
         <section className="mt-4">
           <div className="bg-white rounded-2xl p-4 shadow flex items-center gap-4">
             <img
-              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=400&auto=format&fit=crop"
+              src={profileData?.profileImg || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=400&auto=format&fit=crop"}
+              onError={(e)=>{e.currentTarget.src='https://picsum.photos/seed/interiorprofile/200/200'}}
               alt="Profile"
               className="w-16 h-16 rounded-full object-cover"
             />
             <div className="flex-1">
-              <h1 className="text-xl sm:text-2xl font-semibold">Jeff Murray</h1>
-              <p className="text-[#78836e]">Interior Designer</p>
+              <h1 className="text-xl sm:text-2xl font-semibold">{profileData?.name || "Jeff Murray"}</h1>
+              <p className="text-[#78836e]">{profileData?.profession || "Interior Designer"}</p>
               <div className="mt-3 flex gap-2">
-                {[Instagram, Facebook, Twitter, Youtube].map((Icon, i) => (
-                  <a key={i} href="#" className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#f5c157', color: '#000' }}>
-                    <Icon size={18} />
-                  </a>
-                ))}
+                {Object.entries(profileData?.socialMedia || {}).map(([platform, url]) => {
+                  const Icon = socialIcons[platform];
+                  if (!Icon || !url) return null;
+                  return (
+                    <a key={platform} href={url} className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#f5c157', color: '#000' }}>
+                      <Icon size={18} />
+                    </a>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -87,27 +131,27 @@ function InteriorDesignTemplate() {
         <section className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div className="rounded-xl bg-white p-4 shadow">
             <p className="text-sm text-[#78836e]">Phone</p>
-            <p className="font-medium break-all">+1 (555) 339-1200</p>
+            <p className="font-medium break-all">{profileData?.phone1 || "+1 (555) 339-1200"}</p>
           </div>
           <div className="rounded-xl bg-white p-4 shadow">
             <p className="text-sm text-[#78836e]">Email</p>
-            <p className="font-medium break-all">jeff@studio.com</p>
+            <p className="font-medium break-all">{profileData?.email || "jeff@studio.com"}</p>
           </div>
           <div className="rounded-xl bg-white p-4 shadow">
             <p className="text-sm text-[#78836e]">Website</p>
-            <p className="font-medium break-all">studiojeff.design</p>
+            <p className="font-medium break-all">{profileData?.websiteLink || "studiojeff.design"}</p>
           </div>
           <div className="rounded-xl bg-white p-4 shadow">
             <p className="text-sm text-[#78836e]">Location</p>
-            <p className="font-medium break-all">NYC, USA</p>
+            <p className="font-medium break-all">{profileData?.location || "NYC, USA"}</p>
           </div>
         </section>
 
         <section className="mt-12">
           <h2 className="text-2xl font-semibold">Our Services</h2>
           <div className="mt-6 grid sm:grid-cols-3 gap-6">
-            {services.map((s) => (
-              <div key={s.title} className="rounded-2xl bg-white p-6 shadow">
+            {services.map((s, index) => (
+              <div key={index} className="rounded-2xl bg-white p-6 shadow">
                 <div className="w-10 h-10 rounded-lg bg-[#f5c157] text-black flex items-center justify-center text-lg">★</div>
                 <h3 className="mt-4 font-medium">{s.title}</h3>
                 <p className="mt-2 text-sm text-[#78836e]">{s.desc}</p>
@@ -119,54 +163,25 @@ function InteriorDesignTemplate() {
         <section className="mt-12">
           <h2 className="text-2xl font-semibold">Gallery</h2>
           <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {gallery.map((src, i) => (
-              <img key={i} src={src} alt="Project" className="rounded-xl h-36 sm:h-44 w-full object-cover shadow" />
+            {gallery.map((g, i) => (
+              <img key={i} src={g.src} onError={(e)=>{e.currentTarget.src=g.fallback}} alt="Project" className="rounded-xl h-36 sm:h-44 w-full object-cover shadow" />
             ))}
           </div>
         </section>
 
         <section className="mt-12">
-          <div className="rounded-2xl overflow-hidden relative">
-            <img
-              src="https://images.unsplash.com/photo-1493666438817-866a91353ca9?q=80&w=1600&auto=format&fit=crop"
-              alt="Appointment"
-              className="w-full h-44 sm:h-[280px] object-cover"
-            />
-            <div className="hidden sm:block absolute inset-0 bg-[#1f1f1f]/50" />
-            <div className="p-6 sm:absolute sm:inset-0 sm:p-8 sm:flex sm:items-center sm:justify-between gap-6">
-              <div className="text-[#1f1f1f] sm:text-white">
-                <h3 className="text-xl sm:text-2xl font-semibold">Make an Appointment</h3>
-                <p className="text-sm sm:text-white/80 mt-1">Select a slot and book instantly.</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {['10:00','12:30','14:00','16:30'].map((t) => (
-                    <button
-                      key={t}
-                      onClick={() => setSlot(t)}
-                      className={`px-3 py-1 rounded-full text-sm ${slot===t ? 'bg-[#f5c157] text-black' : 'bg-[#f5f3ed] text-[#333] sm:bg-white/20 sm:text-white'}`}
-                    >
-                      {t}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <form onSubmit={handleAppointment} className="mt-4 sm:mt-0 bg-white rounded-xl p-4 sm:p-5 shadow w-full sm:w-[380px]">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <input name="name" placeholder="Your name" className="px-3 py-2 rounded-lg bg-[#f5f3ed]" />
-                  <input name="phone" placeholder="Phone" className="px-3 py-2 rounded-lg bg-[#f5f3ed]" />
-                  <input type="date" name="date" className="px-3 py-2 rounded-lg bg-[#f5f3ed] col-span-1 sm:col-span-2" />
-                </div>
-                <button className="mt-4 w-full px-4 py-2 rounded-lg bg-[#f5c157] text-black font-medium">Make Appointment</button>
-              </form>
-            </div>
+          <h2 className="text-2xl font-semibold">Make an Appointment</h2>
+          <div className="mt-4 rounded-2xl bg-white p-6 shadow">
+            {renderAppointmentForm(handleAppointment, appointmentMessage, appointmentError, appointmentLoading, slot, setSlot, '#f5c157')}
           </div>
         </section>
 
         <section className="mt-12">
           <h2 className="text-2xl font-semibold">Products</h2>
           <div className="mt-6 grid sm:grid-cols-3 gap-6">
-            {products.map((p) => (
-              <div key={p.name} className="rounded-2xl bg-white shadow overflow-hidden">
-                <img src={p.img} alt={p.name} className="w-full h-40 object-cover" />
+            {products.map((p, i) => (
+              <div key={i} className="rounded-2xl bg-white shadow overflow-hidden">
+                <img src={p.img.src} onError={(e)=>{e.currentTarget.src=p.img.fallback}} alt={p.name} className="w-full h-40 object-cover" />
                 <div className="p-4 flex items-center justify-between">
                   <div>
                     <p className="font-medium">{p.name}</p>
@@ -179,35 +194,73 @@ function InteriorDesignTemplate() {
         </section>
 
         <section className="mt-12">
-          <h2 className="text-2xl font-semibold">Testimonial</h2>
-          <div className="mt-6 rounded-2xl bg-white p-6 shadow flex items-start gap-4">
-            <img
-              src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop"
-              alt="Reviewer"
-              className="w-16 h-16 rounded-xl object-cover"
-            />
-            <div className="flex-1">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-medium">James Brown</p>
-                  <p className="text-sm text-[#78836e]">Homeowner</p>
-                </div>
-                <div className="text-[#f5c157]">★★★★★</div>
+          <h2 className="text-2xl font-semibold">Business Hours</h2>
+          <div className="mt-6 grid sm:grid-cols-3 gap-4">
+            {hours.map(([d,h], index) => (
+              <div key={index} className="rounded-xl bg-white p-4 shadow flex items-center justify-between">
+                <span className="font-medium">{d}</span>
+                <span className="text-sm text-[#78836e]">{h}</span>
               </div>
-              <p className="mt-3 text-sm text-[#555]">Jeff transformed our apartment with warm tones and clever zoning. We loved the process and the result exceeded expectations.</p>
-            </div>
+            ))}
           </div>
         </section>
 
-        
+        <section className="mt-12 rounded-2xl bg-white p-6 shadow flex items-center gap-6">
+          <img
+            src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop"
+            onError={(e)=>{e.currentTarget.src='https://picsum.photos/seed/interiorqr/200/200'}}
+            alt="Profile"
+            className="w-40 h-28 rounded-xl object-cover"
+          />
+          <div className="flex-1">
+            <p className="font-medium">QR Code</p>
+            <p className="text-sm text-[#78836e]">Save our contact and packages instantly.</p>
+          </div>
+          <img
+            src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent('https://studiojeff.design')}`}
+            alt="QR"
+            className="w-24 h-24 rounded-lg"
+          />
+        </section>
 
-        
+        <section className="mt-12">
+          <h2 className="text-2xl font-semibold">Contact Us</h2>
+          <form onSubmit={handleContact} className="mt-6 rounded-2xl bg-white p-6 shadow grid sm:grid-cols-2 gap-4">
+            <input name="cname" placeholder="Your name" className="px-3 py-2 rounded-lg bg-[#f5f3ed]" />
+            <input type="email" name="email" placeholder="Email" className="px-3 py-2 rounded-lg bg-[#f5f3ed]" />
+            <input name="cphone" placeholder="Phone number" className="px-3 py-2 rounded-lg bg-[#f5f3ed]" />
+            <textarea name="message" placeholder="Your message" rows={3} className="px-3 py-2 rounded-lg bg-[#f5f3ed] sm:col-span-2" />
+            <button className="sm:col-span-2 px-4 py-2 rounded-lg bg-[#f5c157] text-black font-medium">Send Message</button>
+          </form>
+        </section>
 
-        
-
-        
-
-        
+        <section className="mt-12 mb-8">
+          <h2 className="text-2xl font-semibold">Testimonials</h2>
+          <div className="mt-6 space-y-6">
+            {testimonials.map((testimonial, index) => (
+              <div key={index} className="rounded-2xl bg-white p-6 shadow flex items-start gap-4">
+                <img
+                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop"
+                  onError={(e)=>{e.currentTarget.src='https://picsum.photos/seed/interiortest/200/200'}}
+                  alt={testimonial.name}
+                  className="w-16 h-16 rounded-xl object-cover"
+                />
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">{testimonial.name}</p>
+                      <p className="text-sm text-[#78836e]">{testimonial.role}</p>
+                    </div>
+                    <div className="text-[#f5c157]">
+                      {renderRating(testimonial.rating)}
+                    </div>
+                  </div>
+                  <p className="mt-3 text-sm text-[#555]">{testimonial.feedback}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   )

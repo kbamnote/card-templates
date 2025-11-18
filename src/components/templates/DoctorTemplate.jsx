@@ -1,45 +1,85 @@
 import { useState } from 'react'
-import { Instagram, Facebook, Twitter, Linkedin } from 'lucide-react'
+import { Instagram, Facebook, Twitter, Linkedin, Phone, Mail, MapPin, Globe, Calendar } from 'lucide-react'
+import { handleAppointmentSubmit, renderAppointmentForm } from './AppointmentUtils'
 
-function DoctorTemplate() {
-  const accent = '#7c6cf0'
+function DoctorTemplate({ profileData }) {
+  const accent = profileData?.accentColor || '#7c6cf0'
   const accent2 = '#ff7bd3'
 
-  const services = [
+  // Use profile data or fallback to defaults
+  const services = profileData?.services || [
     { title: 'Health Checkups', desc: 'Comprehensive exams and diagnostics.' },
     { title: 'Pediatric Care', desc: 'Gentle care for kids and teens.' },
     { title: 'Consultations', desc: 'Personalized treatment plans and follow-ups.' },
   ]
 
-  const gallery = [
-    'https://img.freepik.com/premium-photo/indian-doctor-with-patient-hospital-clinic_466689-96540.jpg',
-    'https://tse3.mm.bing.net/th/id/OIP.LXCG4-xZblVgIIw097P2gQHaE7?pid=Api&P=0&h=180',
-    'https://tse2.mm.bing.net/th/id/OIP.8stxm1jODk_2hwJd8pS5gwHaE8?pid=Api&P=0&h=180',
-    'https://img.freepik.com/premium-photo/abdominal-pain-patient-woman-having-medical-exam-with-doctor-illness-from-stomach-cancer_1292509-3501.jpg',
+  const gallery = profileData?.gallery || [
+    { src: 'https://img.freepik.com/premium-photo/indian-doctor-with-patient-hospital-clinic_466689-96540.jpg', fallback: 'https://picsum.photos/seed/doctor1/800/600' },
+    { src: 'https://tse3.mm.bing.net/th/id/OIP.LXCG4-xZblVgIIw097P2gQHaE7?pid=Api&P=0&h=180', fallback: 'https://picsum.photos/seed/doctor2/800/600' },
+    { src: 'https://tse2.mm.bing.net/th/id/OIP.8stxm1jODk_2hwJd8pS5gwHaE8?pid=Api&P=0&h=180', fallback: 'https://picsum.photos/seed/doctor3/800/600' },
+    { src: 'https://img.freepik.com/premium-photo/abdominal-pain-patient-woman-having-medical-exam-with-doctor-illness-from-stomach-cancer_1292509-3501.jpg', fallback: 'https://picsum.photos/seed/doctor4/800/600' },
   ]
 
-  const products = [
-    { name: 'Care Package A', price: '$79.00', img: 'https://tse4.mm.bing.net/th/id/OIP.XtkjRx3X0ucpanfaKKCT_QHaHa?pid=Api&P=0&h=180' },
-    { name: 'Care Package B', price: '$129.00', img: 'https://tse1.mm.bing.net/th/id/OIP.4llKwh4mWy01DiMQmywhkQHaE8?pid=Api&P=0&h=180' },
+  const products = profileData?.products || [
+    { name: 'Care Package A', price: '$79.00', img: { src: 'https://tse4.mm.bing.net/th/id/OIP.XtkjRx3X0ucpanfaKKCT_QHaHa?pid=Api&P=0&h=180', fallback: 'https://picsum.photos/seed/doctor5/800/600' } },
+    { name: 'Care Package B', price: '$129.00', img: { src: 'https://tse1.mm.bing.net/th/id/OIP.4llKwh4mWy01DiMQmywhkQHaE8?pid=Api&P=0&h=180', fallback: 'https://picsum.photos/seed/doctor6/800/600' } },
   ]
+
+  // Use testimonial data or fallback to defaults
+  const testimonials = profileData?.testimonials && profileData.testimonials.length > 0 
+    ? profileData.testimonials.map(t => ({
+        name: t.testimonialName || 'Anonymous',
+        role: 'Patient',
+        feedback: t.feedback || 'Great service',
+        rating: 5
+      }))
+    : [
+        {
+          name: 'James Scott',
+          role: 'Patient',
+          feedback: 'Professional, empathetic, and thorough. Booking and follow-up were seamless.',
+          rating: 5
+        }
+      ];
 
   const [slot, setSlot] = useState('10:00')
+  const [appointmentLoading, setAppointmentLoading] = useState(false)
+  const [appointmentMessage, setAppointmentMessage] = useState('')
+  const [appointmentError, setAppointmentError] = useState('')
 
-  function handleAppointment(e) {
-    e.preventDefault()
-    const form = new FormData(e.currentTarget)
-    const name = form.get('name')
-    const phone = form.get('phone')
-    const date = form.get('date')
-    alert(`Appointment booked for ${name} on ${date} at ${slot}. Contact: ${phone}`)
+  async function handleAppointment(e) {
+    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot)
   }
+
+  // Social media icons mapping
+  const socialIcons = {
+    facebook: Facebook,
+    instagram: Instagram,
+    twitter: Twitter,
+    linkedin: Linkedin,
+    whatsapp: Phone
+  }
+
+  // Render star ratings
+  const renderRating = (rating) => {
+    return (
+      <div className="flex">
+        {[...Array(5)].map((_, i) => (
+          <span key={i} className={i < rating ? 'text-yellow-400' : 'text-gray-300'}>
+            ★
+          </span>
+        ))}
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen text-[#333]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <section className="relative overflow-hidden rounded-2xl">
           <img
-            src="https://backpainsa.com/wp-content/uploads/2015/02/bigstock-Medical-physician-doctor-hands-84721406.jpg"
+            src={profileData?.bannerImg || "https://backpainsa.com/wp-content/uploads/2015/02/bigstock-Medical-physician-doctor-hands-84721406.jpg"}
+            onError={(e)=>{e.currentTarget.src='https://picsum.photos/seed/doctorhero/1600/400'}}
             alt="Clinic hero"
             className="w-full h-40 sm:h-[320px] object-cover"
           />
@@ -48,19 +88,34 @@ function DoctorTemplate() {
         <section className="mt-4">
           <div className="bg-white rounded-2xl p-4 shadow flex items-center gap-4">
             <img
-              src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?q=80&w=400&auto=format&fit=crop"
+              src={profileData?.profileImg || "https://images.unsplash.com/photo-1607746882042-944635dfe10e?q=80&w=400&auto=format&fit=crop"}
+              onError={(e)=>{e.currentTarget.src='https://picsum.photos/seed/doctorprofile/200/200'}}
               alt="Doctor profile"
               className="w-16 h-16 rounded-full object-cover"
             />
             <div className="flex-1">
-              <h1 className="text-xl sm:text-2xl font-semibold">Richard Madden</h1>
-              <p className="text-[#666]">MD • General Physician</p>
+              <div className="flex items-center gap-2">
+                <h1 className="text-xl sm:text-2xl font-semibold">{profileData?.name || "Richard Madden"}</h1>
+                {profileData?.logoImg && (
+                  <img 
+                    src={profileData.logoImg} 
+                    alt="Clinic Logo" 
+                    className="h-8 w-auto"
+                    onError={(e) => {e.currentTarget.style.display = 'none'}}
+                  />
+                )}
+              </div>
+              <p className="text-[#666]">{profileData?.profession || "MD • General Physician"}</p>
               <div className="mt-3 flex gap-2">
-                {[Instagram, Facebook, Twitter, Linkedin].map((Icon, i) => (
-                  <a key={i} href="#" className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: accent, color: '#fff' }}>
-                    <Icon size={18} />
-                  </a>
-                ))}
+                {Object.entries(profileData?.socialMedia || {}).map(([platform, url]) => {
+                  const Icon = socialIcons[platform];
+                  if (!Icon || !url) return null;
+                  return (
+                    <a key={platform} href={url} className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: accent, color: '#fff' }}>
+                      <Icon size={18} />
+                    </a>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -69,27 +124,27 @@ function DoctorTemplate() {
         <section className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div className="rounded-xl bg-white p-4 shadow">
             <p className="text-sm text-[#666]">Email</p>
-            <p className="font-medium break-all">care@healthclinic.com</p>
+            <p className="font-medium break-all">{profileData?.email || "care@healthclinic.com"}</p>
           </div>
           <div className="rounded-xl bg-white p-4 shadow">
             <p className="text-sm text-[#666]">Phone</p>
-            <p className="font-medium break-all">+1 (555) 122-3344</p>
+            <p className="font-medium break-all">{profileData?.phone1 || "+1 (555) 122-3344"}</p>
           </div>
           <div className="rounded-xl bg-white p-4 shadow">
             <p className="text-sm text-[#666]">Website</p>
-            <p className="font-medium break-all">healthclinic.care</p>
+            <p className="font-medium break-all">{profileData?.websiteLink || "healthclinic.care"}</p>
           </div>
           <div className="rounded-xl bg-white p-4 shadow">
             <p className="text-sm text-[#666]">Location</p>
-            <p className="font-medium break-all">San Jose, USA</p>
+            <p className="font-medium break-all">{profileData?.location || "San Jose, USA"}</p>
           </div>
         </section>
 
         <section className="mt-12">
           <h2 className="text-2xl font-semibold">Our Services</h2>
           <div className="mt-6 grid sm:grid-cols-3 gap-6">
-            {services.map((s) => (
-              <div key={s.title} className="rounded-2xl bg-white p-6 shadow">
+            {services.map((s, index) => (
+              <div key={index} className="rounded-2xl bg-white p-6 shadow">
                 <div className="w-10 h-10 rounded-lg" style={{ backgroundColor: accent2 }}>
                   <div className="w-full h-full flex items-center justify-center text-white text-lg">✚</div>
                 </div>
@@ -103,35 +158,15 @@ function DoctorTemplate() {
         <section className="mt-12">
           <h2 className="text-2xl font-semibold">Make an Appointment</h2>
           <div className="mt-4 rounded-2xl bg-white p-6 shadow">
-            <div>
-              <p className="text-sm">Select a slot:</p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {['09:00','11:00','13:00','15:00','17:00'].map((t) => (
-                  <button
-                    key={t}
-                    onClick={() => setSlot(t)}
-                    className={`px-3 py-1 rounded-full text-sm ${slot===t ? 'text-white' : 'text-[#333]'}`}
-                    style={{ backgroundColor: slot===t ? accent : '#f3f0ff' }}
-                  >
-                    {t}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <form onSubmit={handleAppointment} className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <input name="name" placeholder="Your name" className="px-3 py-2 rounded-lg bg-[#f7f5ff]" />
-              <input name="phone" placeholder="Phone" className="px-3 py-2 rounded-lg bg-[#f7f5ff]" />
-              <input type="date" name="date" className="px-3 py-2 rounded-lg bg-[#f7f5ff] col-span-1 sm:col-span-2" />
-              <button className="sm:col-span-2 mt-2 w-full px-4 py-2 rounded-lg text-white font-medium" style={{ backgroundColor: accent }}>Make Appointment</button>
-            </form>
+            {renderAppointmentForm(handleAppointment, appointmentMessage, appointmentError, appointmentLoading, slot, setSlot, accent)}
           </div>
         </section>
 
         <section className="mt-12">
           <h2 className="text-2xl font-semibold">Gallery</h2>
           <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {gallery.map((src, i) => (
-              <img key={i} src={src} alt="Clinic" className="rounded-xl h-36 sm:h-44 w-full object-cover shadow" />
+            {gallery.map((g, i) => (
+              <img key={i} src={g.src} onError={(e)=>{e.currentTarget.src=g.fallback}} alt="Clinic" className="rounded-xl h-36 sm:h-44 w-full object-cover shadow" />
             ))}
           </div>
         </section>
@@ -139,9 +174,9 @@ function DoctorTemplate() {
         <section className="mt-12">
           <h2 className="text-2xl font-semibold">Products</h2>
           <div className="mt-6 grid sm:grid-cols-2 gap-6">
-            {products.map((p) => (
-              <div key={p.name} className="rounded-2xl bg-white shadow overflow-hidden">
-                <img src={p.img} alt={p.name} className="w-full h-40 object-cover" />
+            {products.map((p, i) => (
+              <div key={i} className="rounded-2xl bg-white shadow overflow-hidden">
+                <img src={p.img.src} onError={(e)=>{e.currentTarget.src=p.img.fallback}} alt={p.name} className="w-full h-40 object-cover" />
                 <div className="p-4">
                   <p className="font-medium">{p.name}</p>
                   <p className="text-sm text-[#666]">{p.price}</p>
@@ -152,23 +187,30 @@ function DoctorTemplate() {
         </section>
 
         <section className="mt-12 mb-8">
-          <h2 className="text-2xl font-semibold">Testimonial</h2>
-          <div className="mt-6 rounded-2xl bg-white p-6 shadow flex items-start gap-4">
-            <img
-              src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop"
-              alt="Reviewer"
-              className="w-16 h-16 rounded-xl object-cover"
-            />
-            <div className="flex-1">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-medium">James Scott</p>
-                  <p className="text-sm text-[#666]">Patient</p>
+          <h2 className="text-2xl font-semibold">Testimonials</h2>
+          <div className="mt-6 space-y-6">
+            {testimonials.map((testimonial, index) => (
+              <div key={index} className="rounded-2xl bg-white p-6 shadow flex items-start gap-4">
+                <img
+                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop"
+                  onError={(e)=>{e.currentTarget.src='https://picsum.photos/seed/doctortest/200/200'}}
+                  alt={testimonial.name}
+                  className="w-16 h-16 rounded-xl object-cover"
+                />
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">{testimonial.name}</p>
+                      <p className="text-sm text-[#666]">{testimonial.role}</p>
+                    </div>
+                    <div style={{ color: accent2 }}>
+                      {renderRating(testimonial.rating)}
+                    </div>
+                  </div>
+                  <p className="mt-3 text-sm text-[#555]">{testimonial.feedback}</p>
                 </div>
-                <div style={{ color: accent2 }}>★★★★★</div>
               </div>
-              <p className="mt-3 text-sm text-[#555]">Professional, empathetic, and thorough. Booking and follow-up were seamless.</p>
-            </div>
+            ))}
           </div>
         </section>
       </div>

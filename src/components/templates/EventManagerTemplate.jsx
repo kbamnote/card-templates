@@ -1,26 +1,9 @@
 import { useState } from 'react'
-import { Instagram, Facebook, Twitter, Linkedin } from 'lucide-react'
+import { Instagram, Facebook, Twitter, Linkedin, Phone, Mail, MapPin, Globe, Calendar } from 'lucide-react'
+import { handleAppointmentSubmit, renderAppointmentForm } from './AppointmentUtils'
 
-function EventManagerTemplate() {
-  const accent = '#ff9a3d'
-
-  const services = [
-    { title: 'Venue Design', desc: 'Layouts, lighting, and decor plans.' },
-    { title: 'Scheduling & Budget', desc: 'Timelines and cost management end-to-end.' },
-    { title: 'Vendor Coordination', desc: 'Catering, music, photography, logistics.' },
-  ]
-
-  const gallery = [
-    { src: 'https://images.pexels.com/photos/1691813/pexels-photo-1691813.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event1/800/600' },
-    { src: 'https://images.pexels.com/photos/1691901/pexels-photo-1691901.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event2/800/600' },
-    { src: 'https://images.pexels.com/photos/1769402/pexels-photo-1769402.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event3/800/600' },
-    { src: 'https://images.pexels.com/photos/1769406/pexels-photo-1769406.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event4/800/600' },
-  ]
-
-  const products = [
-    { name: 'Classic Event Pack', price: '$399.00', img: { src: 'https://images.pexels.com/photos/1691901/pexels-photo-1691901.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event5/800/600' } },
-    { name: 'Premium Event Pack', price: '$799.00', img: { src: 'https://images.pexels.com/photos/1691813/pexels-photo-1691813.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event6/800/600' } },
-  ]
+function EventManagerTemplate({ profileData }) {
+  const accent = profileData?.accentColor || '#e6b85c'
 
   const hours = [
     ['Sunday', '09:00 - 20:00'],
@@ -32,23 +15,71 @@ function EventManagerTemplate() {
     ['Saturday', '09:00 - 20:00'],
   ]
 
-  const [slot, setSlot] = useState('10:00')
+  // Use profile data or fallback to defaults
+  const services = profileData?.services || [
+    { title: 'Weddings', desc: 'Full planning and execution for dream weddings.' },
+    { title: 'Corporate', desc: 'Conferences, launches, and team events.' },
+    { title: 'Social', desc: 'Birthdays, anniversaries, and celebrations.' },
+  ]
 
-  function handleAppointment(e) {
-    e.preventDefault()
-    const form = new FormData(e.currentTarget)
-    const name = form.get('name')
-    const phone = form.get('phone')
-    const date = form.get('date')
-    alert(`Appointment booked for ${name} on ${date} at ${slot}. Contact: ${phone}`)
+  const gallery = profileData?.gallery || [
+    { src: 'https://images.pexels.com/photos/1181424/pexels-photo-1181424.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event1/800/600' },
+    { src: 'https://images.pexels.com/photos/1181416/pexels-photo-1181416.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event2/800/600' },
+    { src: 'https://images.pexels.com/photos/1181397/pexels-photo-1181397.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event3/800/600' },
+    { src: 'https://images.pexels.com/photos/1181398/pexels-photo-1181398.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event4/800/600' },
+  ]
+
+  const products = profileData?.products || [
+    { name: 'Wedding Package', price: '$4,999.00', img: { src: 'https://images.pexels.com/photos/1181424/pexels-photo-1181424.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event5/800/600' } },
+    { name: 'Corporate Event', price: '$2,499.00', img: { src: 'https://images.pexels.com/photos/1181416/pexels-photo-1181416.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event6/800/600' } },
+  ]
+
+  // Use testimonial data or fallback to defaults
+  const testimonials = profileData?.testimonials && profileData.testimonials.length > 0 
+    ? profileData.testimonials.map(t => ({
+        name: t.testimonialName || 'Anonymous',
+        role: 'Client',
+        feedback: t.feedback || 'Great service',
+        rating: 5
+      }))
+    : [
+        {
+          name: 'Michael Thompson',
+          role: 'Corporate Client',
+          feedback: 'The event planning was flawless. Every detail was perfectly executed, and our guests were impressed.',
+          rating: 5
+        }
+      ];
+
+  const [slot, setSlot] = useState('10:00')
+  const [appointmentLoading, setAppointmentLoading] = useState(false)
+  const [appointmentMessage, setAppointmentMessage] = useState('')
+  const [appointmentError, setAppointmentError] = useState('')
+
+  async function handleAppointment(e) {
+    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot)
   }
+
+  // Social media icons mapping
+  const socialIcons = {
+    facebook: Facebook,
+    instagram: Instagram,
+    twitter: Twitter,
+    linkedin: Linkedin,
+    whatsapp: Phone
+  }
+
+  // Render star ratings
+  const renderStars = (rating) => {
+    return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+  };
 
   return (
     <div className="min-h-screen bg-[#14110f] text-[#f1e9df]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <section className="relative overflow-hidden rounded-2xl">
           <img
-            src="https://images.pexels.com/photos/265938/pexels-photo-265938.jpeg?auto=compress&cs=tinysrgb&w=1600"
+            src={profileData?.bannerImg || "https://images.pexels.com/photos/265938/pexels-photo-265938.jpeg?auto=compress&cs=tinysrgb&w=1600"}
             onError={(e)=>{e.currentTarget.src='https://picsum.photos/seed/eventhero/1600/400'}}
             alt="Event hero"
             className="w-full h-40 sm:h-[320px] object-cover"
@@ -58,20 +89,34 @@ function EventManagerTemplate() {
         <section className="mt-4">
           <div className="bg-[#1b1715] rounded-2xl p-4 shadow flex items-center gap-4">
             <img
-              src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=400"
+              src={profileData?.profileImg || "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=400"}
               onError={(e)=>{e.currentTarget.src='https://picsum.photos/seed/eventprofile/200/200'}}
               alt="Manager profile"
               className="w-16 h-16 rounded-full object-cover"
             />
             <div className="flex-1">
-              <h1 className="text-xl sm:text-2xl font-semibold">Vanessa Joe</h1>
-              <p className="text-[#cdbbaa]">Event Manager • Weddings & Corporate</p>
+              <div className="flex items-center gap-2">
+                <h1 className="text-xl sm:text-2xl font-semibold">{profileData?.name || "Vanessa Joe"}</h1>
+                {profileData?.logoImg && (
+                  <img 
+                    src={profileData.logoImg} 
+                    alt="Company Logo" 
+                    className="h-8 w-auto"
+                    onError={(e) => {e.currentTarget.style.display = 'none'}}
+                  />
+                )}
+              </div>
+              <p className="text-[#cdbbaa]">{profileData?.profession || "Event Manager • Weddings & Corporate"}</p>
               <div className="mt-3 flex gap-2">
-                {[Instagram, Facebook, Twitter, Linkedin].map((Icon, i) => (
-                  <a key={i} href="#" className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: accent, color: '#14110f' }}>
-                    <Icon size={18} />
-                  </a>
-                ))}
+                {Object.entries(profileData?.socialMedia || {}).map(([platform, url]) => {
+                  const Icon = socialIcons[platform];
+                  if (!Icon || !url) return null;
+                  return (
+                    <a key={platform} href={url} className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: accent, color: '#14110f' }}>
+                      <Icon size={18} />
+                    </a>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -80,27 +125,27 @@ function EventManagerTemplate() {
         <section className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div className="rounded-xl bg-[#1b1715] p-4 shadow">
             <p className="text-sm text-[#cdbbaa]">Email</p>
-            <p className="font-medium break-all">events@grandstudio.com</p>
+            <p className="font-medium break-all">{profileData?.email || "events@grandstudio.com"}</p>
           </div>
           <div className="rounded-xl bg-[#1b1715] p-4 shadow">
             <p className="text-sm text-[#cdbbaa]">Phone</p>
-            <p className="font-medium break-all">+1 (555) 660-2214</p>
+            <p className="font-medium break-all">{profileData?.phone1 || "+1 (555) 660-2214"}</p>
           </div>
           <div className="rounded-xl bg-[#1b1715] p-4 shadow">
             <p className="text-sm text-[#cdbbaa]">Website</p>
-            <p className="font-medium break-all">grandstudio.events</p>
+            <p className="font-medium break-all">{profileData?.websiteLink || "grandstudio.events"}</p>
           </div>
           <div className="rounded-xl bg-[#1b1715] p-4 shadow">
             <p className="text-sm text-[#cdbbaa]">Location</p>
-            <p className="font-medium break-all">Chicago, USA</p>
+            <p className="font-medium break-all">{profileData?.location || "Chicago, USA"}</p>
           </div>
         </section>
 
         <section className="mt-12">
           <h2 className="text-2xl font-semibold">Our Services</h2>
           <div className="mt-6 grid sm:grid-cols-3 gap-6">
-            {services.map((s) => (
-              <div key={s.title} className="rounded-2xl bg-[#1b1715] p-6 shadow">
+            {services.map((s, index) => (
+              <div key={index} className="rounded-2xl bg-[#1b1715] p-6 shadow">
                 <div className="w-10 h-10 rounded-lg" style={{ backgroundColor: accent }}>
                   <div className="w-full h-full flex items-center justify-center text-[#14110f] text-lg">🎉</div>
                 </div>
@@ -114,27 +159,7 @@ function EventManagerTemplate() {
         <section className="mt-12">
           <h2 className="text-2xl font-semibold">Make an Appointment</h2>
           <div className="mt-4 rounded-2xl bg-[#1b1715] p-6 shadow">
-            <div>
-              <p className="text-sm text-[#cdbbaa]">Select a slot:</p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {['09:00','11:00','13:00','15:00','17:00'].map((t) => (
-                  <button
-                    key={t}
-                    onClick={() => setSlot(t)}
-                    className={`px-3 py-1 rounded-full text-sm ${slot===t ? 'text-[#14110f]' : 'text-[#f1e9df]'}`}
-                    style={{ backgroundColor: slot===t ? accent : '#2a2320' }}
-                  >
-                    {t}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <form onSubmit={handleAppointment} className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <input name="name" placeholder="Your name" className="px-3 py-2 rounded-lg bg-[#2a2320] text-[#f1e9df]" />
-              <input name="phone" placeholder="Phone" className="px-3 py-2 rounded-lg bg-[#2a2320] text-[#f1e9df]" />
-              <input type="date" name="date" className="px-3 py-2 rounded-lg bg-[#2a2320] text-[#f1e9df] col-span-1 sm:col-span-2" />
-              <button className="sm:col-span-2 mt-2 w-full px-4 py-2 rounded-lg font-medium" style={{ backgroundColor: accent, color: '#14110f' }}>Make Appointment</button>
-            </form>
+            {renderAppointmentForm(handleAppointment, appointmentMessage, appointmentError, appointmentLoading, slot, setSlot, accent)}
           </div>
         </section>
 
@@ -150,8 +175,8 @@ function EventManagerTemplate() {
         <section className="mt-12">
           <h2 className="text-2xl font-semibold">Products</h2>
           <div className="mt-6 grid sm:grid-cols-2 gap-6">
-            {products.map((p) => (
-              <div key={p.name} className="rounded-2xl bg-[#1b1715] shadow overflow-hidden">
+            {products.map((p, i) => (
+              <div key={i} className="rounded-2xl bg-[#1b1715] shadow overflow-hidden">
                 <img src={p.img.src} onError={(e)=>{e.currentTarget.src=p.img.fallback}} alt={p.name} className="w-full h-40 object-cover" />
                 <div className="p-4">
                   <p className="font-medium">{p.name}</p>
@@ -162,11 +187,38 @@ function EventManagerTemplate() {
           </div>
         </section>
 
+        {/* Testimonials Section */}
+        <section className="mt-12">
+          <h2 className="text-2xl font-semibold">Testimonials</h2>
+          <div className="mt-6 space-y-6">
+            {testimonials.map((testimonial, index) => (
+              <div key={index} className="rounded-2xl bg-[#1b1715] p-6 shadow flex items-start gap-4">
+                <img
+                  src={`https://ui-avatars.com/api/?name=${testimonial.name}&background=random`}
+                  onError={(e)=>{e.currentTarget.src='https://picsum.photos/seed/eventtest/200/200'}}
+                  alt={testimonial.name}
+                  className="w-16 h-16 rounded-xl object-cover"
+                />
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">{testimonial.name}</p>
+                      <p className="text-sm text-[#cdbbaa]">{testimonial.role}</p>
+                    </div>
+                    <div style={{ color: accent }}>{renderStars(testimonial.rating)}</div>
+                  </div>
+                  <p className="mt-3 text-sm text-[#e0d6c9]">{testimonial.feedback}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <section className="mt-12">
           <h2 className="text-2xl font-semibold">Business Hours</h2>
           <div className="mt-6 grid sm:grid-cols-3 gap-4">
-            {hours.map(([d,h]) => (
-              <div key={d} className="rounded-xl bg-[#1b1715] p-4 shadow flex items-center justify-between">
+            {hours.map(([d,h], index) => (
+              <div key={index} className="rounded-xl bg-[#1b1715] p-4 shadow flex items-center justify-between">
                 <span className="font-medium">{d}</span>
                 <span className="text-sm text-[#cdbbaa]">{h}</span>
               </div>
