@@ -1,8 +1,12 @@
-import { apponitmentCreate } from '../../utils/Api';
+import { appointmentCreate } from '../../utils/Api';
 
 export const handleAppointmentSubmit = async (e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot) => {
   e.preventDefault();
-  const form = new FormData(e.currentTarget);
+  
+  // Capture the form element before async operations
+  const formElement = e.currentTarget;
+  
+  const form = new FormData(formElement);
   const name = form.get('name');
   const phone = form.get('phone');
   const date = form.get('date');
@@ -10,6 +14,7 @@ export const handleAppointmentSubmit = async (e, setAppointmentLoading, setAppoi
   // Validate form data
   if (!name || !phone || !date) {
     setAppointmentError('Please fill in all fields');
+    setAppointmentMessage(''); // Clear any previous success message
     return;
   }
   
@@ -17,26 +22,68 @@ export const handleAppointmentSubmit = async (e, setAppointmentLoading, setAppoi
   const appointmentDateTime = new Date(`${date}T${slot}:00`);
   
   setAppointmentLoading(true);
-  setAppointmentMessage('');
-  setAppointmentError('');
+  setAppointmentMessage(''); // Clear previous messages
+  setAppointmentError('');   // Clear previous errors
   
   try {
-    const response = await apponitmentCreate({
+    const response = await appointmentCreate({
       clientName: name,
       phone: phone,
       appointmentDate: appointmentDateTime,
       notes: `Appointment requested for ${slot}`
     });
     
-    if (response.data.success) {
-      setAppointmentMessage('Appointment booked successfully!');
-      // Reset form
-      e.currentTarget.reset();
+    // Debugging: log the response to see its structure
+    console.log('Appointment response:', response);
+    
+    // Check if response has data and handle accordingly
+    if (response && response.data) {
+      if (response.data.success) {
+        setAppointmentMessage('Appointment booked successfully!');
+        setAppointmentError(''); 
+        if (formElement) {
+          formElement.reset();
+        }
+      } else {
+        setAppointmentError(response.data.message || 'Failed to book appointment');
+        setAppointmentMessage(''); // Clear any previous success message
+      }
     } else {
-      setAppointmentError(response.data.message || 'Failed to book appointment');
+      // If response structure is different, check status
+      if (response && (response.status === 200 || response.status === 201)) {
+        setAppointmentMessage('Appointment booked successfully!');
+        setAppointmentError(''); 
+        if (formElement) {
+          formElement.reset();
+        }
+      } else {
+        setAppointmentError('Failed to book appointment. Please try again.');
+        setAppointmentMessage(''); // Clear any previous success message
+      }
     }
   } catch (err) {
-    setAppointmentError(err.response?.data?.message || 'Error booking appointment. Please try again.');
+    console.error('Appointment error:', err);
+    console.error('Error response:', err.response);
+    
+    // Check if the appointment was actually created despite the error
+    if (err.response && (err.response.status === 200 || err.response.status === 201)) {
+      // If we get a 200/201 status, the appointment was likely created
+      setAppointmentMessage('Appointment booked successfully!');
+      setAppointmentError(''); // Clear any previous error
+      // Reset form using the captured element
+      if (formElement) {
+        formElement.reset();
+      }
+    } else {
+      // Actual error occurred
+      const errorMessage = err.response?.data?.message || 
+                          err.response?.data?.error || 
+                          err.response?.data || 
+                          err.message || 
+                          'Error booking appointment. Please try again.';
+      setAppointmentError(errorMessage);
+      setAppointmentMessage(''); // Clear any previous success message
+    }
   } finally {
     setAppointmentLoading(false);
   }

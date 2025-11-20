@@ -48,7 +48,9 @@ export const resendOTP = (post) => Apiauth.post("/password/forgot-password", pos
 // ============== Profile ==============
 export const profileCreate = (post) => Api.post("/profile/", post);
 export const profileRead = () => Api.get("/profile/me");
-export const profileUpdate = (formData) => Api.put(`/profile/me`, formData);
+export const profileUpdate = (data) => Api.put(`/profile/me`, data, {
+  headers: { "Content-Type": "application/json" }
+});
 export const profileDelete = () => Api.delete("/profile/me");
 export const uploadProfileImg = (formData) =>
   Api.post("/profile/upload/profile-image", formData, {
@@ -103,7 +105,7 @@ export const testimonialUpdate = (id, formData) => Api.put(`/testimonials/${id}`
 export const testimonialDelete = (id) => Api.delete(`/testimonials/${id}`);
 
 // ============== Appointment ==============
-export const apponitmentCreate = (post) => Api.post("/appointments/", post);
+export const appointmentCreate = (post) => Api.post("/appointments/", post);
 export const apponitmentRead = () => Api.get("/appointments/my");
 export const apponitmentReadById = (id) => Api.get(`/appointments/${id}`);
 export const apponitmentUpdate = (id, formData) => Api.put(`/appointments/${id}`, formData);
