@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { login } from '../../utils/Api';
+import { login, profileRead } from '../../utils/Api';
 import Cookies from 'js-cookie';
 import logo from '../../assets/br-logo.png'
 
@@ -24,8 +24,28 @@ const LoginPage = () => {
         // Store token in cookies
         Cookies.set('card-token', response.data.data.token, { expires: 7 });
         
-        // Redirect to dashboard or home page
-        navigate('/');
+        // Check if user has completed onboarding
+        try {
+          const profileResponse = await profileRead();
+          if (profileResponse.data.success) {
+            const profile = profileResponse.data.data;
+            
+            // Check if essential fields are filled
+            if (profile.name && profile.profession) {
+              // User has completed onboarding, redirect to home
+              navigate('/');
+            } else {
+              // User needs to complete onboarding
+              navigate('/onboarding');
+            }
+          } else {
+            // No profile data, redirect to onboarding
+            navigate('/onboarding');
+          }
+        } catch (profileErr) {
+          // Error fetching profile, redirect to onboarding
+          navigate('/onboarding');
+        }
       } else {
         setError(response.data.message || 'Login failed');
       }

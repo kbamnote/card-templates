@@ -7,6 +7,7 @@ import LoginPage from "./components/auth/LoginPage";
 import ForgotPasswordPage from "./components/auth/password/ForgotPasswordPage";
 import VerifyOTPPage from "./components/auth/password/VerifyOTPPage";
 import ResetPasswordPage from "./components/auth/password/ResetPasswordPage";
+import OnboardingPage from "./components/pages/OnboardingPage";
 import NotFoundPage from "./components/common/NotFoundPage";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
                   <Header />
                   <Routes>
                     <Route path="/" element={<LandingPage />} />
+                    <Route path="/onboarding" element={<OnboardingPage />} />
                     <Route path="*" element={<NotFoundPage />} />
                   </Routes>
                 </>

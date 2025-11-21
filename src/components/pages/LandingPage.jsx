@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import TemplateRenderer from '../templates/TemplateRenderer';
 import TemplateSelector from '../templates/TemplateSelector';
 import { profileRead, serviceRead, galleryRead, productRead, testimonialRead } from '../../utils/Api';
@@ -11,6 +12,7 @@ const LandingPage = () => {
   const [testimonialsData, setTestimonialsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
@@ -32,6 +34,14 @@ const LandingPage = () => {
       // Process profile data
       if (profileResponse.data.success) {
         const profile = profileResponse.data.data;
+        
+        // Check if essential fields are filled
+        if (!profile.name || !profile.profession) {
+          // Redirect to onboarding if essential fields are missing
+          navigate('/onboarding');
+          return;
+        }
+        
         setProfileData({
           name: profile.name || '',
           profession: profile.profession || '',
@@ -57,6 +67,8 @@ const LandingPage = () => {
         });
       } else {
         setError('Failed to fetch profile data');
+        // Redirect to onboarding if no profile data
+        navigate('/onboarding');
         return;
       }
 
@@ -94,6 +106,8 @@ const LandingPage = () => {
       }
     } catch (err) {
       setError('Error fetching data: ' + (err.response?.data?.message || err.message));
+      // Redirect to onboarding if there's an error fetching data
+      navigate('/onboarding');
     } finally {
       setLoading(false);
     }

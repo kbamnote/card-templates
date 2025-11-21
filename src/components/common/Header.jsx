@@ -58,7 +58,6 @@ const Header = () => {
   };
 
   const openListsModal = async () => {
-    // Fetch all data when opening the lists modal
     await fetchData();
     setIsListsModalOpen(true);
     setIsDropdownOpen(false);
