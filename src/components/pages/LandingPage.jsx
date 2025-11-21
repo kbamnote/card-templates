@@ -105,9 +105,14 @@ const LandingPage = () => {
         setTestimonialsData(testimonialsResponse.data.data || []);
       }
     } catch (err) {
-      setError('Error fetching data: ' + (err.response?.data?.message || err.message));
-      // Redirect to onboarding if there's an error fetching data
-      navigate('/onboarding');
+      // If it's a 404 error, redirect to onboarding as the user doesn't have a profile yet
+      if (err.response && err.response.status === 404) {
+        navigate('/onboarding');
+      } else {
+        setError('Error fetching data: ' + (err.response?.data?.message || err.message));
+        // Redirect to onboarding if there's an error fetching data
+        navigate('/onboarding');
+      }
     } finally {
       setLoading(false);
     }

@@ -7,7 +7,6 @@ const BASE_URL = "https://elitedigitalcardsbackend-production.up.railway.app/api
 const Api = axios.create({
   baseURL: BASE_URL,
 });
-
 const Apiauth = axios.create({
   baseURL: BASE_URL,
 });
@@ -48,6 +47,7 @@ export const resendOTP = (post) => Apiauth.post("/password/forgot-password", pos
 // ============== Profile ==============
 export const profileCreate = (post) => Api.post("/profile/", post);
 export const profileRead = () => Api.get("/profile/me");
+export const profileReadPublic = (userId) => Api.get(`/profile/public/${userId}`);
 export const profileUpdate = (data) => Api.put(`/profile/me`, data, {
   headers: { "Content-Type": "application/json" }
 });
@@ -72,6 +72,7 @@ export const updateBannerImg = (formData) =>
 // ============== Services ==============
 export const serviceCreate = (post) => Api.post("/services/", post);
 export const serviceRead = () => Api.get("/services/my");
+export const serviceReadPublic = (userId) => Api.get(`/services/public/${userId}`);
 export const serviceUpdate = (id, formData) => Api.put(`/services/${id}`, formData);
 export const serviceDelete = (id) => Api.delete(`/services/${id}`);
 
@@ -81,6 +82,7 @@ export const uploadGalleryImg = (formData) =>
     headers: { "Content-Type": "multipart/form-data" },
   });
 export const galleryRead = () => Api.get("/gallery/my");
+export const galleryReadPublic = (userId) => Api.get(`/gallery/public/${userId}`);
 export const galleryReadById = (id) => Api.get(`/gallery/${id}`);
 export const galleryDelete = (id) => Api.delete(`/gallery/${id}`);
 
@@ -90,6 +92,7 @@ export const uploadProductDetails = (formData) =>
     headers: { "Content-Type": "multipart/form-data" },
   });
 export const productRead = () => Api.get("/products/my");
+export const productReadPublic = (userId) => Api.get(`/products/public/${userId}`);
 export const productReadById = (id) => Api.get(`/products/${id}`);
 export const updateProductDetails = (id, formData) =>
   Api.put(`/products/${id}`, formData, {
@@ -100,6 +103,7 @@ export const productDelete = (id) => Api.delete(`/products/${id}`);
 // ============== Testimonials ==============
 export const testimonialCreate = (post) => Api.post("/testimonials/", post);
 export const testimonialRead = () => Api.get("/testimonials/my");
+export const testimonialReadPublic = (userId) => Api.get(`/testimonials/public/${userId}`);
 export const testimonialReadById = (id) => Api.get(`/testimonials/${id}`);
 export const testimonialUpdate = (id, formData) => Api.put(`/testimonials/${id}`, formData);
 export const testimonialDelete = (id) => Api.delete(`/testimonials/${id}`);
@@ -107,6 +111,7 @@ export const testimonialDelete = (id) => Api.delete(`/testimonials/${id}`);
 // ============== Appointment ==============
 export const appointmentCreate = (post) => Api.post("/appointments/", post);
 export const apponitmentRead = () => Api.get("/appointments/my");
+export const apponitmentReadPublic = (userId) => Api.get(`/appointments/public/${userId}`);
 export const apponitmentReadById = (id) => Api.get(`/appointments/${id}`);
 export const apponitmentUpdate = (id, formData) => Api.put(`/appointments/${id}`, formData);
 export const apponitmentDelete = (id) => Api.delete(`/appointments/${id}`);

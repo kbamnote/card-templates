@@ -69,15 +69,18 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
     
     try {
       // Upload images first if they exist
+      let profileImageUrl = null;
+      let bannerImageUrl = null;
+      
       if (profileImage) {
-        await onProfileImageUpload(profileImage);
+        profileImageUrl = await onProfileImageUpload(profileImage);
       }
       
       if (bannerImage) {
-        await onBannerImageUpload(bannerImage);
+        bannerImageUrl = await onBannerImageUpload(bannerImage);
       }
       
-      // Submit profile data
+      // Submit profile data with image URLs
       const profileData = {
         name: formData.name,
         profession: formData.profession,
@@ -98,7 +101,7 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
         }
       };
       
-      onSubmit(profileData);
+      await onSubmit(profileData, profileImageUrl, bannerImageUrl);
     } catch (err) {
       setError(err.message || 'Error submitting profile');
     }

@@ -43,8 +43,13 @@ const LoginPage = () => {
             navigate('/onboarding');
           }
         } catch (profileErr) {
-          // Error fetching profile, redirect to onboarding
-          navigate('/onboarding');
+          // If it's a 404 error (profile not found), redirect to onboarding
+          if (profileErr.response && profileErr.response.status === 404) {
+            navigate('/onboarding');
+          } else {
+            // For other errors, redirect to onboarding as well
+            navigate('/onboarding');
+          }
         }
       } else {
         setError(response.data.message || 'Login failed');

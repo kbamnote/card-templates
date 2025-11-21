@@ -5,6 +5,7 @@ import ProfileForm from '../forms/ProfileForm';
 import ServicesForm from '../forms/ServicesForm';
 import GalleryForm from '../forms/GalleryForm';
 import ProductsForm from '../forms/ProductsForm';
+import Cookies from 'js-cookie';
 
 const OnboardingPage = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -19,6 +20,14 @@ const OnboardingPage = () => {
   // Check if user has completed onboarding
   useEffect(() => {
     const checkOnboardingStatus = async () => {
+      // Check if user is logged in
+      const token = Cookies.get('card-token');
+      if (!token) {
+        // If not logged in, redirect to login
+        navigate('/login');
+        return;
+      }
+
       try {
         const response = await profileRead();
         if (response.data.success) {
@@ -34,18 +43,30 @@ const OnboardingPage = () => {
         // If profile doesn't exist or is incomplete, continue with onboarding
         setLoading(false);
       } catch (err) {
-        setError('Error checking onboarding status');
-        setLoading(false);
+        // If it's a 404 error, that's expected for new users without profiles
+        if (err.response && err.response.status === 404) {
+          setLoading(false);
+        } else {
+          setError('Error checking onboarding status: ' + (err.response?.data?.message || err.message));
+          setLoading(false);
+        }
       }
     };
 
     checkOnboardingStatus();
   }, [navigate]);
 
-  const handleProfileSubmit = async (data) => {
+  const handleProfileSubmit = async (data, profileImageUrl, bannerImageUrl) => {
     try {
       setLoading(true);
-      const response = await profileCreate(data);
+      // Include image URLs in the profile data if they exist
+      const profileDataWithImages = {
+        ...data,
+        ...(profileImageUrl && { profileImg: profileImageUrl }),
+        ...(bannerImageUrl && { bannerImg: bannerImageUrl })
+      };
+      
+      const response = await profileCreate(profileDataWithImages);
       if (response.data.success) {
         setProfileData(response.data.data);
         setCurrentStep(2);
@@ -65,12 +86,9 @@ const OnboardingPage = () => {
       formData.append('profileImage', file);
       const response = await uploadProfileImg(formData);
       if (response.data.success) {
-        setProfileData(prev => ({
-          ...prev,
-          profileImg: response.data.data.profileImg
-        }));
+        return response.data.data.profileImg;
       }
-      return response.data;
+      throw new Error(response.data.message || 'Error uploading profile image');
     } catch (err) {
       throw new Error(err.response?.data?.message || 'Error uploading profile image');
     }
@@ -82,12 +100,9 @@ const OnboardingPage = () => {
       formData.append('bannerImage', file);
       const response = await uploadBannerImg(formData);
       if (response.data.success) {
-        setProfileData(prev => ({
-          ...prev,
-          bannerImg: response.data.data.bannerImg
-        }));
+        return response.data.data.bannerImg;
       }
-      return response.data;
+      throw new Error(response.data.message || 'Error uploading banner image');
     } catch (err) {
       throw new Error(err.response?.data?.message || 'Error uploading banner image');
     }
