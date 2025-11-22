@@ -190,13 +190,7 @@ const LandingPage = () => {
           />
         </div>
         
-        {/* Template Selector */}
-        <div className="bg-white rounded-xl shadow-md p-6">
-          <TemplateSelector 
-            currentTemplate={profileData.templateId} 
-            onTemplateChange={handleTemplateChange} 
-          />
-        </div>
+        
       </div>
     </div>
   );

@@ -125,6 +125,10 @@ const EditModal = ({ isOpen, onClose, modalType, itemData }) => {
       }
       
       onClose();
+      // Reload the page to reflect template changes
+      if (profileData.templateId) {
+        window.location.reload();
+      }
     } catch (error) {
       console.error('Error saving profile data:', error);
       console.error('Error details:', error.response?.data || error.message);
@@ -143,6 +147,8 @@ const EditModal = ({ isOpen, onClose, modalType, itemData }) => {
         await serviceCreate(serviceData);
       }
       onClose();
+      // Reload the page to reflect changes
+      window.location.reload();
     } catch (error) {
       console.error('Error saving service data:', error);
     }
@@ -154,6 +160,8 @@ const EditModal = ({ isOpen, onClose, modalType, itemData }) => {
     try {
       await serviceDelete(serviceId);
       onClose();
+      // Reload the page to reflect changes
+      window.location.reload();
     } catch (error) {
       console.error('Error deleting service:', error);
     }
@@ -176,6 +184,8 @@ const EditModal = ({ isOpen, onClose, modalType, itemData }) => {
         await uploadGalleryImg(formData);
       }
       onClose();
+      // Reload the page to reflect changes
+      window.location.reload();
     } catch (error) {
       console.error('Error saving gallery data:', error);
     }
@@ -187,6 +197,8 @@ const EditModal = ({ isOpen, onClose, modalType, itemData }) => {
     try {
       await galleryDelete(galleryId);
       onClose();
+      // Reload the page to reflect changes
+      window.location.reload();
     } catch (error) {
       console.error('Error deleting gallery item:', error);
     }
@@ -210,6 +222,8 @@ const EditModal = ({ isOpen, onClose, modalType, itemData }) => {
         await uploadProductDetails(formData);
       }
       onClose();
+      // Reload the page to reflect changes
+      window.location.reload();
     } catch (error) {
       console.error('Error saving product data:', error);
     }
@@ -221,6 +235,8 @@ const EditModal = ({ isOpen, onClose, modalType, itemData }) => {
     try {
       await productDelete(productId);
       onClose();
+      // Reload the page to reflect changes
+      window.location.reload();
     } catch (error) {
       console.error('Error deleting product:', error);
     }
@@ -236,6 +252,8 @@ const EditModal = ({ isOpen, onClose, modalType, itemData }) => {
         await testimonialCreate(testimonialData);
       }
       onClose();
+      // Reload the page to reflect changes
+      window.location.reload();
     } catch (error) {
       console.error('Error saving testimonial data:', error);
     }
@@ -247,6 +265,8 @@ const EditModal = ({ isOpen, onClose, modalType, itemData }) => {
     try {
       await testimonialDelete(testimonialId);
       onClose();
+      // Reload the page to reflect changes
+      window.location.reload();
     } catch (error) {
       console.error('Error deleting testimonial:', error);
     }

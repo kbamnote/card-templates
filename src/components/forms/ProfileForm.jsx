@@ -11,6 +11,7 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
     dob: initialData.dob || '',
     websiteLink: initialData.websiteLink || '',
     appLink: initialData.appLink || '',
+    gmail: initialData.gmail || '',
     facebook: initialData.socialMedia?.facebook || '',
     instagram: initialData.socialMedia?.instagram || '',
     twitter: initialData.socialMedia?.twitter || '',
@@ -91,6 +92,7 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
         dob: formData.dob,
         websiteLink: formData.websiteLink,
         appLink: formData.appLink,
+        gmail: formData.gmail,
         socialMedia: {
           facebook: formData.facebook,
           instagram: formData.instagram,
@@ -323,6 +325,22 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
             onChange={handleChange}
             className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
             placeholder="https://yourapp.com"
+          />
+        </div>
+        
+        {/* Gmail */}
+        <div>
+          <label htmlFor="gmail" className="block text-sm font-medium text-gray-300 mb-1">
+            Gmail
+          </label>
+          <input
+            type="email"
+            id="gmail"
+            name="gmail"
+            value={formData.gmail}
+            onChange={handleChange}
+            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            placeholder="your.email@gmail.com"
           />
         </div>
       </div>

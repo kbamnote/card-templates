@@ -133,7 +133,7 @@ const OnboardingPage = () => {
       setLoading(true);
       const uploadPromises = files.map(file => {
         const formData = new FormData();
-        formData.append('galleryImage', file);
+        formData.append('image', file);
         return uploadGalleryImg(formData);
       });
 
@@ -155,12 +155,8 @@ const OnboardingPage = () => {
   const handleProductSubmit = async (data) => {
     try {
       setLoading(true);
-      const formData = new FormData();
-      Object.keys(data).forEach(key => {
-        formData.append(key, data[key]);
-      });
-      
-      const response = await uploadProductDetails(formData);
+      // The data is already a FormData object from ProductsForm, so we can send it directly
+      const response = await uploadProductDetails(data);
       if (response.data.success) {
         setProductsData(prev => [...prev, response.data.data]);
         // Complete onboarding after a short delay
@@ -171,7 +167,14 @@ const OnboardingPage = () => {
         setError(response.data.message || 'Failed to save product');
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Error saving product');
+      console.error('Product submission error:', err);
+      if (err.response?.data?.message) {
+        setError(`Error: ${err.response.data.message}`);
+      } else if (err.response?.status === 400) {
+        setError('Please make sure all required fields are filled and a product image is selected.');
+      } else {
+        setError('Error saving product. Please try again.');
+      }
     } finally {
       setLoading(false);
     }

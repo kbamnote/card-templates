@@ -40,6 +40,12 @@ const ProductsForm = ({ onSubmit, loading }) => {
       return;
     }
     
+    // Validate that a product photo is selected
+    if (!productData.productPhoto) {
+      setError('Product photo is required');
+      return;
+    }
+    
     // Validate price is a number
     if (isNaN(productData.price) || parseFloat(productData.price) <= 0) {
       setError('Please enter a valid price');
@@ -50,10 +56,7 @@ const ProductsForm = ({ onSubmit, loading }) => {
     formData.append('productName', productData.productName);
     formData.append('price', productData.price);
     formData.append('details', productData.details);
-    
-    if (productData.productPhoto) {
-      formData.append('productPhoto', productData.productPhoto);
-    }
+    formData.append('productPhoto', productData.productPhoto);
     
     onSubmit(formData);
   };

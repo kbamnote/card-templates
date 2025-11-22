@@ -15,28 +15,36 @@ const TemplateSelector = ({ currentTemplate, onTemplateChange }) => {
     { id: 'template11', name: 'UI Designer', thumbnail: 'ui' }
   ];
 
+  const handleTemplateSelect = (templateId) => {
+    onTemplateChange(templateId);
+    // Reload the page to reflect the template change
+    window.location.reload();
+  };
+
   return (
     <div className="template-selector">
-      <h3 className="text-xl font-semibold mb-4">Choose Your Template</h3>
+      <h3 className="text-xl font-semibold mb-4 text-center">Choose Your Template</h3>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {templates.map((template) => (
           <div 
             key={template.id}
-            className={`border-2 rounded-lg p-3 transition-all ${
+            className={`border-2 rounded-lg p-3 transition-all cursor-pointer transform hover:scale-105 ${
               currentTemplate === template.id 
-                ? 'border-blue-500 bg-blue-50' 
-                : 'border-gray-200 hover:border-gray-300'
+                ? 'border-blue-500 bg-blue-900 shadow-lg' 
+                : 'border-gray-600 hover:border-gray-400 bg-zinc-800'
             }`}
+            onClick={() => handleTemplateSelect(template.id)}
           >
-            <div className="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16 mx-auto" />
-            <p className="mt-2 text-center text-sm font-medium">{template.name}</p>
+            <div className="bg-gray-700 border-2 border-dashed rounded-xl w-16 h-16 mx-auto flex items-center justify-center">
+              <span className="text-xs text-gray-400">{template.thumbnail}</span>
+            </div>
+            <p className="mt-2 text-center text-sm font-medium text-gray-200">{template.name}</p>
             <div className="mt-2">
               <button
-                onClick={() => onTemplateChange(template.id)}
                 className={`w-full py-1 text-xs rounded ${
                   currentTemplate === template.id
                     ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                 }`}
               >
                 {currentTemplate === template.id ? 'Selected' : 'Select'}
@@ -44,6 +52,11 @@ const TemplateSelector = ({ currentTemplate, onTemplateChange }) => {
             </div>
           </div>
         ))}
+      </div>
+      <div className="mt-6 text-center">
+        <p className="text-gray-400 text-sm">
+          Click on any template to select it. The page will automatically refresh with your new template.
+        </p>
       </div>
     </div>
   );

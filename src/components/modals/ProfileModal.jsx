@@ -11,7 +11,7 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
     dob: '',
     websiteLink: '',
     appLink: '',
-    templateId: '',
+    templateId: 'template1',
     profileImg: null,
     bannerImg: null,
     facebook: '',
@@ -23,6 +23,21 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
   });
   const [previewProfileImg, setPreviewProfileImg] = useState('');
   const [previewBannerImg, setPreviewBannerImg] = useState('');
+
+  // Template options with descriptive names
+  const templateOptions = [
+    { id: 'template1', name: 'CEO Executive' },
+    { id: 'template2', name: 'Developer' },
+    { id: 'template3', name: 'Doctor' },
+    { id: 'template4', name: 'Event Manager' },
+    { id: 'template5', name: 'Hair Dresser' },
+    { id: 'template6', name: 'Handyman' },
+    { id: 'template7', name: 'Interior Design' },
+    { id: 'template8', name: 'Lawyer' },
+    { id: 'template9', name: 'Music Portfolio' },
+    { id: 'template10', name: 'Taxi Service' },
+    { id: 'template11', name: 'UI Designer' }
+  ];
 
   // Initialize form data when profileData changes
   useEffect(() => {
@@ -37,7 +52,7 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
         dob: profileData.dob ? profileData.dob.split('T')[0] : '',
         websiteLink: profileData.websiteLink || '',
         appLink: profileData.appLink || '',
-        templateId: profileData.templateId || '',
+        templateId: profileData.templateId || 'template1',
         profileImg: null,
         bannerImg: null,
         facebook: profileData.socialMedia?.facebook || '',
@@ -80,6 +95,10 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
     e.preventDefault();
     try {
       await onSave(formData);
+      // Reload the page to reflect any changes, especially template changes
+      if (formData.templateId && formData.templateId !== (profileData?.templateId || 'template1')) {
+        window.location.reload();
+      }
     } catch (error) {
       // Show error to user
       alert(`Error saving profile: ${error.message}`);
@@ -224,15 +243,20 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
               
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-1">
-                  Template ID
+                  Template
                 </label>
-                <input
-                  type="text"
+                <select
                   name="templateId"
                   value={formData.templateId}
                   onChange={handleChange}
                   className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+                >
+                  {templateOptions.map((template) => (
+                    <option key={template.id} value={template.id}>
+                      {template.name}
+                    </option>
+                  ))}
+                </select>
               </div>
               
               {/* Social Media Fields */}
