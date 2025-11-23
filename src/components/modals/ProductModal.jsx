@@ -89,7 +89,7 @@ const ProductModal = ({ isOpen, onClose, productData, onSave, isEditing, onDelet
                   name="productName"
                   value={formData.productName}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                   required
                 />
               </div>
@@ -105,7 +105,7 @@ const ProductModal = ({ isOpen, onClose, productData, onSave, isEditing, onDelet
                   onChange={handleChange}
                   step="0.01"
                   min="0"
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                   required
                 />
               </div>
@@ -119,7 +119,7 @@ const ProductModal = ({ isOpen, onClose, productData, onSave, isEditing, onDelet
                   value={formData.details}
                   onChange={handleChange}
                   rows="3"
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
               
@@ -131,7 +131,7 @@ const ProductModal = ({ isOpen, onClose, productData, onSave, isEditing, onDelet
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
               
@@ -168,7 +168,7 @@ const ProductModal = ({ isOpen, onClose, productData, onSave, isEditing, onDelet
               )}
               <button
                 type="submit"
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-500"
               >
                 {isEditing ? 'Update Product' : 'Add Product'}
               </button>

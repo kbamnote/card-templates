@@ -77,8 +77,8 @@ const GalleryForm = ({ onSubmit, loading }) => {
                   file:mr-4 file:py-2 file:px-4
                   file:rounded-md file:border-0
                   file:text-sm file:font-semibold
-                  file:bg-indigo-600 file:text-white
-                  hover:file:bg-indigo-700"
+                  file:bg-green-600 file:text-white
+                  hover:file:bg-green-700"
               />
             </label>
           </div>
@@ -121,7 +121,7 @@ const GalleryForm = ({ onSubmit, loading }) => {
         <button
           type="submit"
           disabled={loading || selectedFiles.length === 0}
-          className="px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 transition duration-300"
+          className="px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50 transition duration-300"
         >
           {loading ? 'Uploading...' : 'Upload & Continue'}
         </button>

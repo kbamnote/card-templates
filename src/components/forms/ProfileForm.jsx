@@ -45,16 +45,42 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
   const handleProfileImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        setError('Please select a valid image file (JPEG, PNG, GIF, etc.)');
+        return;
+      }
+      
+      // Validate file size (5MB limit)
+      if (file.size > 5 * 1024 * 1024) {
+        setError('Image size must be less than 5MB');
+        return;
+      }
+      
       setProfileImage(file);
       setProfileImagePreview(URL.createObjectURL(file));
+      setError('');
     }
   };
 
   const handleBannerImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        setError('Please select a valid image file (JPEG, PNG, GIF, etc.)');
+        return;
+      }
+      
+      // Validate file size (5MB limit)
+      if (file.size > 5 * 1024 * 1024) {
+        setError('Image size must be less than 5MB');
+        return;
+      }
+      
       setBannerImage(file);
       setBannerImagePreview(URL.createObjectURL(file));
+      setError('');
     }
   };
 
@@ -105,7 +131,8 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
       
       await onSubmit(profileData, profileImageUrl, bannerImageUrl);
     } catch (err) {
-      setError(err.message || 'Error submitting profile');
+      console.error('Profile submission error:', err);
+      setError(err.message || 'Error submitting profile. Please check the console for more details.');
     }
   };
 
@@ -144,8 +171,8 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
                     file:mr-4 file:py-2 file:px-4
                     file:rounded-md file:border-0
                     file:text-sm file:font-semibold
-                    file:bg-indigo-600 file:text-white
-                    hover:file:bg-indigo-700"
+                    file:bg-green-600 file:text-white
+                    hover:file:bg-green-700"
                 />
               </label>
             </div>
@@ -176,8 +203,8 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
                     file:mr-4 file:py-2 file:px-4
                     file:rounded-md file:border-0
                     file:text-sm file:font-semibold
-                    file:bg-indigo-600 file:text-white
-                    hover:file:bg-indigo-700"
+                    file:bg-green-600 file:text-white
+                    hover:file:bg-green-700"
                 />
               </label>
             </div>
@@ -196,7 +223,7 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
             value={formData.name}
             onChange={handleChange}
             required
-            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="Enter your full name"
           />
         </div>
@@ -213,7 +240,7 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
             value={formData.profession}
             onChange={handleChange}
             required
-            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="Enter your profession"
           />
         </div>
@@ -229,7 +256,7 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
             value={formData.about}
             onChange={handleChange}
             rows={4}
-            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="Tell us about yourself"
           />
         </div>
@@ -245,7 +272,7 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
             name="phone1"
             value={formData.phone1}
             onChange={handleChange}
-            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="Enter primary phone number"
           />
         </div>
@@ -260,7 +287,7 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
             name="phone2"
             value={formData.phone2}
             onChange={handleChange}
-            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="Enter secondary phone number"
           />
         </div>
@@ -276,7 +303,7 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
             name="location"
             value={formData.location}
             onChange={handleChange}
-            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="Enter your location"
           />
         </div>
@@ -292,7 +319,7 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
             name="dob"
             value={formData.dob}
             onChange={handleChange}
-            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
           />
         </div>
         
@@ -307,7 +334,7 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
             name="websiteLink"
             value={formData.websiteLink}
             onChange={handleChange}
-            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="https://yourwebsite.com"
           />
         </div>
@@ -323,7 +350,7 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
             name="appLink"
             value={formData.appLink}
             onChange={handleChange}
-            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="https://yourapp.com"
           />
         </div>
@@ -339,7 +366,7 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
             name="gmail"
             value={formData.gmail}
             onChange={handleChange}
-            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="your.email@gmail.com"
           />
         </div>
@@ -359,7 +386,7 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
               name="facebook"
               value={formData.facebook}
               onChange={handleSocialMediaChange}
-              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="https://facebook.com/username"
             />
           </div>
@@ -374,7 +401,7 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
               name="instagram"
               value={formData.instagram}
               onChange={handleSocialMediaChange}
-              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="https://instagram.com/username"
             />
           </div>
@@ -389,7 +416,7 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
               name="twitter"
               value={formData.twitter}
               onChange={handleSocialMediaChange}
-              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="https://twitter.com/username"
             />
           </div>
@@ -404,7 +431,7 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
               name="linkedin"
               value={formData.linkedin}
               onChange={handleSocialMediaChange}
-              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="https://linkedin.com/in/username"
             />
           </div>
@@ -419,7 +446,7 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
               name="youtube"
               value={formData.youtube}
               onChange={handleSocialMediaChange}
-              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="https://youtube.com/channel"
             />
           </div>
@@ -434,7 +461,7 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
               name="whatsapp"
               value={formData.whatsapp}
               onChange={handleSocialMediaChange}
-              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
               placeholder="+1234567890"
             />
           </div>
@@ -445,7 +472,7 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
         <button
           type="submit"
           disabled={loading}
-          className="px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 transition duration-300"
+          className="px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50 transition duration-300"
         >
           {loading ? 'Saving...' : 'Save & Continue'}
         </button>

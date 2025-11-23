@@ -6,6 +6,7 @@ import ServicesForm from '../forms/ServicesForm';
 import GalleryForm from '../forms/GalleryForm';
 import ProductsForm from '../forms/ProductsForm';
 import Cookies from 'js-cookie';
+import logo from '../../assets/br-logo.png'
 
 const OnboardingPage = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -81,30 +82,66 @@ const OnboardingPage = () => {
   };
 
   const handleProfileImageUpload = async (file) => {
-    try {
-      const formData = new FormData();
-      formData.append('profileImage', file);
-      const response = await uploadProfileImg(formData);
-      if (response.data.success) {
-        return response.data.data.profileImg;
+    // Retry mechanism for image uploads
+    const maxRetries = 3;
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const formData = new FormData();
+        formData.append('profileImg', file); // Changed from 'profileImage' to 'profileImg' to match backend
+        const response = await uploadProfileImg(formData);
+        if (response.data.success) {
+          return response.data.data.profileImg;
+        }
+        throw new Error(response.data.message || 'Error uploading profile image');
+      } catch (err) {
+        console.error(`Profile image upload attempt ${attempt} failed:`, err);
+        
+        // If this is the last attempt, throw the error
+        if (attempt === maxRetries) {
+          if (err.response?.data?.message) {
+            throw new Error(`Profile image upload failed: ${err.response.data.message}`);
+          } else if (err.response?.status) {
+            throw new Error(`Profile image upload failed with status ${err.response.status}`);
+          } else {
+            throw new Error('Error uploading profile image. Please try again.');
+          }
+        }
+        
+        // Wait before retrying (exponential backoff)
+        await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
       }
-      throw new Error(response.data.message || 'Error uploading profile image');
-    } catch (err) {
-      throw new Error(err.response?.data?.message || 'Error uploading profile image');
     }
   };
 
   const handleBannerImageUpload = async (file) => {
-    try {
-      const formData = new FormData();
-      formData.append('bannerImage', file);
-      const response = await uploadBannerImg(formData);
-      if (response.data.success) {
-        return response.data.data.bannerImg;
+    // Retry mechanism for image uploads
+    const maxRetries = 3;
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const formData = new FormData();
+        formData.append('bannerImg', file); // Changed from 'bannerImage' to 'bannerImg' to match backend
+        const response = await uploadBannerImg(formData);
+        if (response.data.success) {
+          return response.data.data.bannerImg;
+        }
+        throw new Error(response.data.message || 'Error uploading banner image');
+      } catch (err) {
+        console.error(`Banner image upload attempt ${attempt} failed:`, err);
+        
+        // If this is the last attempt, throw the error
+        if (attempt === maxRetries) {
+          if (err.response?.data?.message) {
+            throw new Error(`Banner image upload failed: ${err.response.data.message}`);
+          } else if (err.response?.status) {
+            throw new Error(`Banner image upload failed with status ${err.response.status}`);
+          } else {
+            throw new Error('Error uploading banner image. Please try again.');
+          }
+        }
+        
+        // Wait before retrying (exponential backoff)
+        await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
       }
-      throw new Error(response.data.message || 'Error uploading banner image');
-    } catch (err) {
-      throw new Error(err.response?.data?.message || 'Error uploading banner image');
     }
   };
 
@@ -180,16 +217,18 @@ const OnboardingPage = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Checking onboarding status...</p>
-        </div>
-      </div>
-    );
-  }
+ if (loading) {
+     return (
+       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+         <div className="text-center">
+           <div className="relative">
+             <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600 mx-auto"></div>
+             <img src={logo} alt="Loading" className="h-8 w-8 absolute inset-0 m-auto" />
+           </div>
+         </div>
+       </div>
+     );
+   }
 
   if (error) {
     return (
@@ -198,7 +237,7 @@ const OnboardingPage = () => {
           <div className="text-red-300 font-medium">Error: {error}</div>
           <button 
             onClick={() => window.location.reload()}
-            className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+            className="mt-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
           >
             Retry
           </button>
@@ -223,7 +262,7 @@ const OnboardingPage = () => {
                 <div 
                   className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${
                     currentStep === step 
-                      ? 'bg-indigo-600 text-white' 
+                      ? 'bg-green-600 text-white' 
                       : currentStep > step 
                         ? 'bg-green-600 text-white' 
                         : 'bg-gray-700 text-gray-400'
@@ -242,7 +281,7 @@ const OnboardingPage = () => {
           </div>
           <div className="mt-2 h-2 bg-gray-700 rounded-full">
             <div 
-              className="h-full bg-indigo-600 rounded-full transition-all duration-300"
+              className="h-full bg-green-600 rounded-full transition-all duration-300"
               style={{ width: `${(currentStep - 1) * 33.33}%` }}
             ></div>
           </div>

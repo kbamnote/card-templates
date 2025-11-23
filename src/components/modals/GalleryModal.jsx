@@ -57,7 +57,7 @@ const GalleryModal = ({ isOpen, onClose, galleryItem, onSave, isEditing, onDelet
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
       <div className="bg-zinc-900 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
@@ -83,7 +83,7 @@ const GalleryModal = ({ isOpen, onClose, galleryItem, onSave, isEditing, onDelet
                   name="caption"
                   value={formData.caption}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
               
@@ -95,7 +95,7 @@ const GalleryModal = ({ isOpen, onClose, galleryItem, onSave, isEditing, onDelet
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
               
@@ -132,7 +132,7 @@ const GalleryModal = ({ isOpen, onClose, galleryItem, onSave, isEditing, onDelet
               )}
               <button
                 type="submit"
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-500"
               >
                 {isEditing ? 'Update Item' : 'Add Item'}
               </button>

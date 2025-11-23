@@ -56,7 +56,7 @@ const ServicesForm = ({ onSubmit, loading }) => {
             value={serviceData.title}
             onChange={handleChange}
             required
-            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="Enter service name"
           />
         </div>
@@ -73,7 +73,7 @@ const ServicesForm = ({ onSubmit, loading }) => {
             onChange={handleChange}
             rows={4}
             required
-            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="Describe your service in detail"
           />
         </div>
@@ -92,7 +92,7 @@ const ServicesForm = ({ onSubmit, loading }) => {
         <button
           type="submit"
           disabled={loading}
-          className="px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 transition duration-300"
+          className="px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50 transition duration-300"
         >
           {loading ? 'Saving...' : 'Save & Continue'}
         </button>

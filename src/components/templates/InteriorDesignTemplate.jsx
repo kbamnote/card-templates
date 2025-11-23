@@ -239,12 +239,11 @@ function InteriorDesignTemplate({ profileData }) {
           <div className="mt-6 space-y-6">
             {testimonials.map((testimonial, index) => (
               <div key={index} className="rounded-2xl bg-white p-6 shadow flex items-start gap-4">
-                <img
-                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop"
-                  onError={(e)=>{e.currentTarget.src='https://picsum.photos/seed/interiortest/200/200'}}
-                  alt={testimonial.name}
-                  className="w-16 h-16 rounded-xl object-cover"
-                />
+                <div className="w-16 h-16 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#f5c157', color: '#fff' }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                  </svg>
+                </div>
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
                     <div>

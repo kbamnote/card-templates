@@ -23,7 +23,6 @@ const TemplateSelector = ({ currentTemplate, onTemplateChange }) => {
 
   return (
     <div className="template-selector">
-      <h3 className="text-xl font-semibold mb-4 text-center">Choose Your Template</h3>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {templates.map((template) => (
           <div 

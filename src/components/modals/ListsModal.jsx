@@ -59,7 +59,7 @@ const ListsModal = ({ isOpen, onClose, services, galleryItems, products, testimo
 
   return (
     <>
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
         <div className="bg-zinc-900 rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
           <div className="p-6">
             <div className="flex justify-between items-center mb-4">
@@ -87,7 +87,7 @@ const ListsModal = ({ isOpen, onClose, services, galleryItems, products, testimo
                         <div className="flex space-x-2 ml-3">
                           <button 
                             onClick={() => handleEdit('services', service)}
-                            className="text-blue-400 hover:text-blue-300 text-sm"
+                            className="text-green-400 hover:text-green-300 text-sm"
                           >
                             Edit
                           </button>
@@ -127,7 +127,7 @@ const ListsModal = ({ isOpen, onClose, services, galleryItems, products, testimo
                         <div className="flex space-x-2 ml-3">
                           <button 
                             onClick={() => handleEdit('gallery', item)}
-                            className="text-blue-400 hover:text-blue-300 text-sm"
+                            className="text-green-400 hover:text-green-300 text-sm"
                           >
                             Edit
                           </button>
@@ -168,7 +168,7 @@ const ListsModal = ({ isOpen, onClose, services, galleryItems, products, testimo
                         <div className="flex space-x-2 ml-3">
                           <button 
                             onClick={() => handleEdit('products', product)}
-                            className="text-blue-400 hover:text-blue-300 text-sm"
+                            className="text-green-400 hover:text-green-300 text-sm"
                           >
                             Edit
                           </button>
@@ -201,7 +201,7 @@ const ListsModal = ({ isOpen, onClose, services, galleryItems, products, testimo
                         <div className="flex space-x-2 ml-3">
                           <button 
                             onClick={() => handleEdit('testimonials', testimonial)}
-                            className="text-blue-400 hover:text-blue-300 text-sm"
+                            className="text-green-400 hover:text-green-300 text-sm"
                           >
                             Edit
                           </button>

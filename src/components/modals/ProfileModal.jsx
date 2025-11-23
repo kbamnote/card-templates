@@ -108,7 +108,7 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
       <div className="bg-zinc-900 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
@@ -132,7 +132,7 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                   required
                 />
               </div>
@@ -146,7 +146,7 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
                   name="profession"
                   value={formData.profession}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
               
@@ -159,7 +159,7 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
                   value={formData.about}
                   onChange={handleChange}
                   rows="3"
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
               
@@ -172,7 +172,7 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
                   name="phone1"
                   value={formData.phone1}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
               
@@ -185,7 +185,7 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
                   name="phone2"
                   value={formData.phone2}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
               
@@ -198,7 +198,7 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
                   name="location"
                   value={formData.location}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
               
@@ -211,7 +211,7 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
                   name="dob"
                   value={formData.dob}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
               
@@ -224,7 +224,7 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
                   name="websiteLink"
                   value={formData.websiteLink}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
               
@@ -237,7 +237,7 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
                   name="appLink"
                   value={formData.appLink}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
               
@@ -249,7 +249,7 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
                   name="templateId"
                   value={formData.templateId}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                 >
                   {templateOptions.map((template) => (
                     <option key={template.id} value={template.id}>
@@ -269,7 +269,7 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
                   name="facebook"
                   value={formData.facebook}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="https://facebook.com/..."
                 />
               </div>
@@ -283,7 +283,7 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
                   name="instagram"
                   value={formData.instagram}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="https://instagram.com/..."
                 />
               </div>
@@ -297,7 +297,7 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
                   name="twitter"
                   value={formData.twitter}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="https://twitter.com/..."
                 />
               </div>
@@ -311,7 +311,7 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
                   name="linkedin"
                   value={formData.linkedin}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="https://linkedin.com/..."
                 />
               </div>
@@ -325,7 +325,7 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
                   name="youtube"
                   value={formData.youtube}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="https://youtube.com/..."
                 />
               </div>
@@ -339,7 +339,7 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
                   name="whatsapp"
                   value={formData.whatsapp}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="+1234567890"
                 />
               </div>
@@ -352,7 +352,7 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
                   type="file"
                   accept="image/*"
                   onChange={(e) => handleImageChange(e, 'profileImg')}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
                 {previewProfileImg && (
                   <div className="mt-2">
@@ -373,7 +373,7 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
                   type="file"
                   accept="image/*"
                   onChange={(e) => handleImageChange(e, 'bannerImg')}
-                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-zinc-800 border border-gray-700 rounded-md text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
                 {previewBannerImg && (
                   <div className="mt-2">
@@ -397,7 +397,7 @@ const ProfileModal = ({ isOpen, onClose, profileData, onSave }) => {
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-500"
               >
                 Save Changes
               </button>

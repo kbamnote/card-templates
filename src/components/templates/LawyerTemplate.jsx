@@ -105,7 +105,7 @@ function LawyerTemplate({ profileData }) {
             <div className="flex-1">
               <h1 className="text-xl sm:text-2xl font-semibold">{profileData?.name || "Mary Jordan"}</h1>
               <p className="text-[#bfbfbf]">{profileData?.profession || "Attorney • Civil & Corporate"}</p>
-              <div className="mt-3 flex gap-2">
+              <div className="mt-3 flex flex-wrap gap-2">
                 {Object.entries(profileData?.socialMedia || {}).map(([platform, url]) => {
                   const Icon = socialIcons[platform];
                   if (!Icon || !url) return null;
@@ -120,7 +120,7 @@ function LawyerTemplate({ profileData }) {
           </div>
         </section>
 
-        <section className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <section className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           <div className="rounded-xl bg-[#151515] p-4 shadow">
             <p className="text-sm text-[#bfbfbf]">Email</p>
             <p className="font-medium break-all">{profileData?.email || "law@firm.com"}</p>
@@ -141,7 +141,7 @@ function LawyerTemplate({ profileData }) {
 
         <section className="mt-12">
           <h2 className="text-2xl font-semibold">Our Services</h2>
-          <div className="mt-6 grid sm:grid-cols-3 gap-6">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {services.map((s, index) => (
               <div key={index} className="rounded-2xl bg-[#151515] p-6 shadow">
                 <div className="w-10 h-10 rounded-lg" style={{ backgroundColor: accent }}>
@@ -163,7 +163,7 @@ function LawyerTemplate({ profileData }) {
 
         <section className="mt-12">
           <h2 className="text-2xl font-semibold">Gallery</h2>
-          <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {gallery.map((g, i) => (
               <img key={i} src={g.src} onError={(e)=>{e.currentTarget.src=g.fallback}} alt="Law" className="rounded-xl h-36 sm:h-44 w-full object-cover shadow" />
             ))}
@@ -172,7 +172,7 @@ function LawyerTemplate({ profileData }) {
 
         <section className="mt-12">
           <h2 className="text-2xl font-semibold">Products</h2>
-          <div className="mt-6 grid sm:grid-cols-2 gap-6">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
             {products.map((p, i) => (
               <div key={i} className="rounded-2xl bg-[#151515] shadow overflow-hidden">
                 <img src={p.img.src} onError={(e)=>{e.currentTarget.src=p.img.fallback}} alt={p.name} className="w-full h-40 object-cover" />
@@ -190,12 +190,11 @@ function LawyerTemplate({ profileData }) {
           <div className="mt-6 space-y-6">
             {testimonials.map((testimonial, index) => (
               <div key={index} className="rounded-2xl bg-[#151515] p-6 shadow flex items-start gap-4">
-                <img
-                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop"
-                  onError={(e)=>{e.currentTarget.src='https://picsum.photos/seed/lawtest/200/200'}}
-                  alt={testimonial.name}
-                  className="w-16 h-16 rounded-xl object-cover"
-                />
+                <div className="w-16 h-16 rounded-xl flex items-center justify-center" style={{ backgroundColor: accent, color: '#0f0f0f' }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                  </svg>
+                </div>
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
                     <div>
