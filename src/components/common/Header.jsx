@@ -70,9 +70,19 @@ const Header = () => {
     try {
       await profileUpdate({ templateId });
       setCurrentTemplate(templateId);
+      // Close the modal and show a brief success message before reloading
       setIsTemplateSelectorOpen(false);
-      // Reload the page to reflect the template change
-      window.location.reload();
+      // Show a brief success message
+      const successMessage = document.createElement('div');
+      successMessage.textContent = 'Template updated successfully!';
+      successMessage.className = 'fixed top-20 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg z-50';
+      document.body.appendChild(successMessage);
+      
+      // Remove the message after 2 seconds and then reload
+      setTimeout(() => {
+        document.body.removeChild(successMessage);
+        window.location.reload();
+      }, 2000);
     } catch (error) {
       console.error('Error updating template:', error);
       alert('Failed to update template. Please try again.');

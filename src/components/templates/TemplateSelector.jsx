@@ -17,8 +17,6 @@ const TemplateSelector = ({ currentTemplate, onTemplateChange }) => {
 
   const handleTemplateSelect = (templateId) => {
     onTemplateChange(templateId);
-    // Reload the page to reflect the template change
-    window.location.reload();
   };
 
   return (

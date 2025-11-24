@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { profileReadPublic, serviceReadPublic, galleryReadPublic, productReadPublic, testimonialReadPublic, apponitmentReadPublic } from '../../utils/Api';
 import TemplateRenderer from '../templates/TemplateRenderer';
+import logo from '../../assets/br-logo.png'
 
 const PublicProfileView = () => {
   const { userId } = useParams();
@@ -101,12 +102,14 @@ const PublicProfileView = () => {
     }
   }, [userId]);
 
-  if (loading) {
+if (loading) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading profile...</p>
+          <div className="relative">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600 mx-auto"></div>
+            <img src={logo} alt="Loading" className="h-8 w-8 absolute inset-0 m-auto" />
+          </div>
         </div>
       </div>
     );
@@ -119,7 +122,7 @@ const PublicProfileView = () => {
           <div className="text-red-300 font-medium">Error: {error}</div>
           <button 
             onClick={() => window.location.reload()}
-            className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+            className="mt-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
           >
             Retry
           </button>
@@ -151,7 +154,7 @@ const PublicProfileView = () => {
     <div className="min-h-screen bg-zinc-900 md:py-6">
       <div className="md:max-w-6xl md:mx-auto md:px-6 lg:px-8">
         {/* Template Preview */}
-        <div className="bg-white rounded-xl shadow-md overflow-hidden">
+        <div className="bg-white overflow-hidden mb-4">
           <TemplateRenderer 
             templateId={profileData.templateId} 
             profileData={templateData} 

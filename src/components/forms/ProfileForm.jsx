@@ -355,21 +355,7 @@ const ProfileForm = ({ onSubmit, onProfileImageUpload, onBannerImageUpload, init
           />
         </div>
         
-        {/* Gmail */}
-        <div>
-          <label htmlFor="gmail" className="block text-sm font-medium text-gray-300 mb-1">
-            Gmail
-          </label>
-          <input
-            type="email"
-            id="gmail"
-            name="gmail"
-            value={formData.gmail}
-            onChange={handleChange}
-            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
-            placeholder="your.email@gmail.com"
-          />
-        </div>
+       
       </div>
       
       {/* Social Media Links */}

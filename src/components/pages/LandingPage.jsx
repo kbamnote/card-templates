@@ -185,7 +185,7 @@ const LandingPage = () => {
       <div className="md:max-w-6xl md:mx-auto md:px-6 lg:px-8">
         
         {/* Template Preview */}
-        <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+        <div className="bg-white overflow-hidden mb-4">
           <TemplateRenderer 
             templateId={profileData.templateId} 
             profileData={templateData} 
