@@ -32,6 +32,7 @@ const PublicProfileView = () => {
         if (profileResponse.data.success) {
           const profile = profileResponse.data.data;
           setProfileData({
+            userId: userId, // Add userId for public appointments
             name: profile.name || '',
             profession: profile.profession || '',
             about: profile.about || '',

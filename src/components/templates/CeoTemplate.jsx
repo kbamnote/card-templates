@@ -3,25 +3,25 @@ import { Instagram, Facebook, Twitter, Linkedin, Youtube, Phone, Mail, MapPin, G
 import { handleAppointmentSubmit, renderAppointmentForm } from './AppointmentUtils'
 
 function CeoTemplate({ profileData }) {
-  const accent = profileData?.accentColor || '#68a7ff'
+  const accent = profileData?.accentColor || '#3b82f6'
 
   // Use profile data or fallback to defaults
   const services = profileData?.services || [
-    { title: 'Strategy Advisory', desc: 'Vision, KPIs, and execution planning.' },
-    { title: 'Leadership Coaching', desc: 'Build high-performing executive teams.' },
-    { title: 'Investor Relations', desc: 'Narratives, decks, and board updates.' },
+    { title: 'Strategic Planning', desc: 'Long-term business vision and execution.' },
+    { title: 'Leadership Coaching', desc: 'Team development and executive mentoring.' },
+    { title: 'Business Development', desc: 'Partnerships, M&A, and growth strategies.' },
   ]
 
   const gallery = profileData?.gallery || [
-    { src: 'https://images.pexels.com/photos/3183171/pexels-photo-3183171.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/ceo1/800/600' },
-    { src: 'https://images.pexels.com/photos/3182791/pexels-photo-3182791.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/ceo2/800/600' },
-    { src: 'https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/ceo3/800/600' },
-    { src: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/ceo4/800/600' },
+    { src: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/ceo1/800/600' },
+    { src: 'https://images.pexels.com/photos/3184462/pexels-photo-3184462.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/ceo2/800/600' },
+    { src: 'https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/ceo3/800/600' },
+    { src: 'https://images.pexels.com/photos/3184301/pexels-photo-3184301.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/ceo4/800/600' },
   ]
 
   const products = profileData?.products || [
-    { name: 'Executive Session', price: '$599.00', img: { src: 'https://images.pexels.com/photos/3182791/pexels-photo-3182791.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/ceo5/800/600' } },
-    { name: 'Board Review', price: '$899.00', img: { src: 'https://images.pexels.com/photos/3183171/pexels-photo-3183171.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/ceo6/800/600' } },
+    { name: 'Strategy Session', price: '$499.00', img: { src: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/ceo5/800/600' } },
+    { name: 'Leadership Workshop', price: '$1,299.00', img: { src: 'https://images.pexels.com/photos/3184462/pexels-photo-3184462.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/ceo6/800/600' } },
   ]
 
   // Use testimonial data or fallback to defaults
@@ -35,8 +35,8 @@ function CeoTemplate({ profileData }) {
     : [
         {
           name: 'Sarah Johnson',
-          role: 'Board Member',
-          feedback: 'Jeremy\'s strategic insights transformed our business approach. His leadership coaching significantly improved our executive team dynamics.',
+          role: 'COO',
+          feedback: 'Jeremy\'s strategic insights helped us pivot during a challenging market shift. His leadership approach is both visionary and practical.',
           rating: 5
         }
       ];
@@ -46,8 +46,11 @@ function CeoTemplate({ profileData }) {
   const [appointmentMessage, setAppointmentMessage] = useState('')
   const [appointmentError, setAppointmentError] = useState('')
 
+  // Get userId from profileData for public appointments
+  const userId = profileData?.userId || profileData?._id;
+
   async function handleAppointment(e) {
-    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot)
+    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot, userId)
   }
 
   // Social media icons mapping
@@ -199,14 +202,12 @@ function CeoTemplate({ profileData }) {
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium">{testimonial.name}</p>
+                      <h3 className="font-medium">{testimonial.name}</h3>
                       <p className="text-sm text-[#5c6b80]">{testimonial.role}</p>
                     </div>
-                    <div style={{ color: accent }}>
-                      {renderRating(testimonial.rating)}
-                    </div>
+                    {renderRating(testimonial.rating)}
                   </div>
-                  <p className="mt-3 text-sm text-[#555]">{testimonial.feedback}</p>
+                  <p className="mt-3 text-[#5c6b80]">{testimonial.feedback}</p>
                 </div>
               </div>
             ))}

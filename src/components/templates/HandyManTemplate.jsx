@@ -7,21 +7,21 @@ function HandyManTemplate({ profileData }) {
 
   // Use profile data or fallback to defaults
   const services = profileData?.services || [
-    { title: 'Repairs', desc: 'Plumbing, electrical, and appliance fixes.' },
-    { title: 'Installations', desc: 'Furniture, fixtures, and home systems.' },
-    { title: 'Maintenance', desc: 'Regular upkeep and seasonal checks.' },
+    { title: 'Plumbing', desc: 'Fixtures, pipes, and water system repairs.' },
+    { title: 'Electrical', desc: 'Wiring, outlets, and electrical installations.' },
+    { title: 'General Repairs', desc: 'Carpentry, drywall, and maintenance.' },
   ]
 
   const gallery = profileData?.gallery || [
-    { src: 'https://images.pexels.com/photos/3826692/pexels-photo-3826692.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/handyman1/800/600' },
-    { src: 'https://images.pexels.com/photos/3826695/pexels-photo-3826695.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/handyman2/800/600' },
-    { src: 'https://images.pexels.com/photos/3826698/pexels-photo-3826698.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/handyman3/800/600' },
-    { src: 'https://images.pexels.com/photos/3826701/pexels-photo-3826701.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/handyman4/800/600' },
+    { src: 'https://images.pexels.com/photos/1181424/pexels-photo-1181424.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/handy1/800/600' },
+    { src: 'https://images.pexels.com/photos/1181416/pexels-photo-1181416.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/handy2/800/600' },
+    { src: 'https://images.pexels.com/photos/1181397/pexels-photo-1181397.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/handy3/800/600' },
+    { src: 'https://images.pexels.com/photos/1181398/pexels-photo-1181398.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/handy4/800/600' },
   ]
 
   const products = profileData?.products || [
-    { name: 'Tool Kit', price: '$89.00', img: { src: 'https://images.pexels.com/photos/3826692/pexels-photo-3826692.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/handyman5/800/600' } },
-    { name: 'Maintenance Pack', price: '$149.00', img: { src: 'https://images.pexels.com/photos/3826695/pexels-photo-3826695.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/handyman6/800/600' } },
+    { name: 'Emergency Service', price: '$99.00', img: { src: 'https://images.pexels.com/photos/1181424/pexels-photo-1181424.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/handy5/800/600' } },
+    { name: 'Maintenance Package', price: '$299.00', img: { src: 'https://images.pexels.com/photos/1181416/pexels-photo-1181416.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/handy6/800/600' } },
   ]
 
   // Use testimonial data or fallback to defaults
@@ -34,9 +34,9 @@ function HandyManTemplate({ profileData }) {
       }))
     : [
         {
-          name: 'Leonard Sanders',
+          name: 'David Miller',
           role: 'Homeowner',
-          feedback: 'Prompt, professional, and transparent pricing. Fixed our AC and mounted shelves perfectly.',
+          feedback: 'Quick response and professional work. Fixed our plumbing issue in no time. Highly recommended!',
           rating: 5
         }
       ];
@@ -46,8 +46,11 @@ function HandyManTemplate({ profileData }) {
   const [appointmentMessage, setAppointmentMessage] = useState('')
   const [appointmentError, setAppointmentError] = useState('')
 
+  // Get userId from profileData for public appointments
+  const userId = profileData?.userId || profileData?._id;
+
   async function handleAppointment(e) {
-    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot)
+    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot, userId)
   }
 
   // Social media icons mapping
@@ -188,14 +191,12 @@ function HandyManTemplate({ profileData }) {
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium">{testimonial.name}</p>
+                      <h3 className="font-medium">{testimonial.name}</h3>
                       <p className="text-sm text-[#666]">{testimonial.role}</p>
                     </div>
-                    <div style={{ color: accent }}>
-                      {renderRating(testimonial.rating)}
-                    </div>
+                    {renderRating(testimonial.rating)}
                   </div>
-                  <p className="mt-3 text-sm text-[#555]">{testimonial.feedback}</p>
+                  <p className="mt-3 text-[#666]">{testimonial.feedback}</p>
                 </div>
               </div>
             ))}

@@ -56,8 +56,11 @@ function LawyerTemplate({ profileData }) {
   const [appointmentMessage, setAppointmentMessage] = useState('')
   const [appointmentError, setAppointmentError] = useState('')
 
+  // Get userId from profileData for public appointments
+  const userId = profileData?.userId || profileData?._id;
+
   async function handleAppointment(e) {
-    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot)
+    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot, userId)
   }
 
   // Social media icons mapping
@@ -198,14 +201,12 @@ function LawyerTemplate({ profileData }) {
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium">{testimonial.name}</p>
+                      <h3 className="font-medium">{testimonial.name}</h3>
                       <p className="text-sm text-[#bfbfbf]">{testimonial.role}</p>
                     </div>
-                    <div style={{ color: accent }}>
-                      {renderRating(testimonial.rating)}
-                    </div>
+                    {renderRating(testimonial.rating)}
                   </div>
-                  <p className="mt-3 text-sm text-[#cfcfcf]">{testimonial.feedback}</p>
+                  <p className="mt-3 text-[#bfbfbf]">{testimonial.feedback}</p>
                 </div>
               </div>
             ))}

@@ -7,21 +7,21 @@ function TaxiTemplate({ profileData }) {
 
   // Use profile data or fallback to defaults
   const services = profileData?.services || [
-    { title: 'Airport Transfers', desc: 'On-time rides to and from the airport.' },
-    { title: 'City Rides', desc: 'Reliable point-to-point rides anywhere in town.' },
-    { title: 'Chauffeur & Rentals', desc: 'Hourly bookings with professional drivers.' },
+    { title: 'City Rides', desc: 'Reliable transportation for daily commutes.' },
+    { title: 'Airport Transfers', desc: 'Punctual pickups and drop-offs to/from airports.' },
+    { title: 'Event Services', desc: 'Chauffeur services for special occasions.' },
   ]
 
   const gallery = profileData?.gallery || [
-    { src: 'https://tse1.mm.bing.net/th/id/OIP.87LQGpCW8p-o0flNgd3p4gHaE8?pid=Api&P=0&h=180', fallback: 'https://picsum.photos/seed/taxigallery0/800/600' },
-    { src: 'https://tse1.mm.bing.net/th/id/OIP.YHDGp99mUqeVwoGf_los8gHaEK?pid=Api&P=0&h=180', fallback: 'https://picsum.photos/seed/taxigallery1/800/600' },
-    { src: 'https://tse4.mm.bing.net/th/id/OIP.kO6FsF915AFbpjujv1wrKAHaEo?pid=Api&P=0&h=180', fallback: 'https://picsum.photos/seed/taxigallery2/800/600' },
-    { src: 'https://wallpapers.com/images/hd/lady-in-a-taxi-4u3oytagjgdkxx2c.jpg', fallback: 'https://picsum.photos/seed/taxigallery3/800/600' },
+    { src: 'https://vault.com/_next/image?url=https:%2F%2Ffcg.infobase.com%2Fmedia%2Fko0ghf3w%2Ftrn-taxdri-001-h.jpg&w=1200&q=75', fallback: 'https://picsum.photos/seed/taxi1/800/600' },
+    { src: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=1200&auto=format&fit=crop', fallback: 'https://picsum.photos/seed/taxi2/800/600' },
+    { src: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1200&auto=format&fit=crop', fallback: 'https://picsum.photos/seed/taxi3/800/600' },
+    { src: 'https://images.unsplash.com/photo-1542362567-b07e54358753?q=80&w=1200&auto=format&fit=crop', fallback: 'https://picsum.photos/seed/taxi4/800/600' },
   ]
 
   const products = profileData?.products || [
-    { name: 'Airport Ride', price: '$39.00', img: { src: 'https://www.mbaairporttransportation.com/wp-content/uploads/2015/11/mba-pick-up.jpg', fallback: 'https://picsum.photos/seed/taxiproduct0/800/600' } },
-    { name: 'City Ride', price: '$19.00', img: { src: 'https://tse2.mm.bing.net/th/id/OIP.ma78G8uvCNgc-jAmcR84IAHaE7?pid=Api&P=0&h=180', fallback: 'https://picsum.photos/seed/taxiproduct1/800/600' } },
+    { name: 'Hourly Service', price: '$35.00/hr', img: { src: 'https://vault.com/_next/image?url=https:%2F%2Ffcg.infobase.com%2Fmedia%2Fko0ghf3w%2Ftrn-taxdri-001-h.jpg&w=1200&q=75', fallback: 'https://picsum.photos/seed/taxi5/800/600' } },
+    { name: 'Airport Transfer', price: '$45.00', img: { src: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=1200&auto=format&fit=crop', fallback: 'https://picsum.photos/seed/taxi6/800/600' } },
   ]
 
   // Use testimonial data or fallback to defaults
@@ -34,9 +34,9 @@ function TaxiTemplate({ profileData }) {
       }))
     : [
         {
-          name: 'Maria Wilson',
-          role: 'Frequent Rider',
-          feedback: 'Clean car, friendly driver, and right on time. Booking was super easy.',
+          name: 'Robert Johnson',
+          role: 'Business Traveler',
+          feedback: 'Punctual, professional, and safe driver. Highly recommend for airport transfers and city rides.',
           rating: 5
         }
       ];
@@ -46,8 +46,11 @@ function TaxiTemplate({ profileData }) {
   const [appointmentMessage, setAppointmentMessage] = useState('')
   const [appointmentError, setAppointmentError] = useState('')
 
+  // Get userId from profileData for public appointments
+  const userId = profileData?.userId || profileData?._id;
+
   async function handleAppointment(e) {
-    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot)
+    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot, userId)
   }
 
   // Social media icons mapping
@@ -188,14 +191,12 @@ function TaxiTemplate({ profileData }) {
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium">{testimonial.name}</p>
+                      <h3 className="font-medium">{testimonial.name}</h3>
                       <p className="text-sm text-[#a9a9a9]">{testimonial.role}</p>
                     </div>
-                    <div style={{ color: accent }}>
-                      {renderRating(testimonial.rating)}
-                    </div>
+                    {renderRating(testimonial.rating)}
                   </div>
-                  <p className="mt-3 text-sm text-[#cfcfcf]">{testimonial.feedback}</p>
+                  <p className="mt-3 text-[#a9a9a9]">{testimonial.feedback}</p>
                 </div>
               </div>
             ))}

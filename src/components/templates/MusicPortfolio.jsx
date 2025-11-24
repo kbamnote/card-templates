@@ -1,35 +1,20 @@
-import React, { useState } from "react";
-import {
-  Music,
-  Phone,
-  Mail,
-  MapPin,
-  Calendar,
-  Instagram,
-  Facebook,
-  Twitter,
-  Youtube,
-  Mic2,
-  Headphones,
-  Guitar,
-  ShoppingCart,
-  Star,
-  Image,
-  Clock,
-} from "lucide-react";
+import { useState } from 'react';
+import { Instagram, Facebook, Twitter, Youtube, Phone, Mail, MapPin, Globe, Calendar, Music, Mic2, Headphones, Guitar, Star, Image, ShoppingCart } from 'lucide-react';
 import { handleAppointmentSubmit, renderAppointmentForm } from './AppointmentUtils';
 
-export default function MusicPortfolio({ profileData }) {
+function MusicPortfolio({ profileData }) {
   const [slot, setSlot] = useState('10:00');
   const [appointmentLoading, setAppointmentLoading] = useState(false);
   const [appointmentMessage, setAppointmentMessage] = useState('');
   const [appointmentError, setAppointmentError] = useState('');
 
+  // Get userId from profileData for public appointments
+  const userId = profileData?.userId || profileData?._id;
+
   async function handleAppointment(e) {
-    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot);
+    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot, userId);
   }
 
-  // Social media icons mapping
   const socialIcons = {
     instagram: <Instagram size={20} />,
     facebook: <Facebook size={20} />,
@@ -241,38 +226,31 @@ export default function MusicPortfolio({ profileData }) {
               ))}
             </div>
           </div>
-        </div>
-        <div className="bg-white/10 rounded-2xl p-4 sm:p-5 mt-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg sm:text-xl font-semibold text-white/90 flex items-center gap-2">
-              <Star size={20} /> Testimonials
+
+          {/* Testimonials */}
+          <div className="bg-white/10 rounded-2xl p-4 sm:p-5">
+            <h3 className="text-lg sm:text-xl font-semibold mb-4 text-white/90 text-center">
+              Testimonials
             </h3>
-          </div>
-          <div className="space-y-4">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-white/10 rounded-xl p-4 sm:p-6 text-left">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center bg-blue-500">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                      </svg>
-                    </div>
+            <div className="space-y-4">
+              {testimonials.map((testimonial, index) => (
+                <div key={index} className="bg-white/10 p-4 rounded-xl">
+                  <div className="flex items-center justify-between mb-2">
                     <div>
-                      <div className="text-white/90 font-medium">{testimonial.name}</div>
-                      <div className="text-gray-400 text-sm">{testimonial.role}</div>
+                      <h4 className="font-medium">{testimonial.name}</h4>
+                      <p className="text-sm text-gray-400">{testimonial.role}</p>
                     </div>
+                    {renderRating(testimonial.rating)}
                   </div>
-                  {renderRating(testimonial.rating)}
+                  <p className="text-gray-300 text-sm">{testimonial.feedback}</p>
                 </div>
-                <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
-                  {testimonial.feedback}
-                </p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
+export default MusicPortfolio;

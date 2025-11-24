@@ -46,8 +46,11 @@ function DeveloperTemplate({ profileData }) {
   const [appointmentMessage, setAppointmentMessage] = useState('')
   const [appointmentError, setAppointmentError] = useState('')
 
+  // Get userId from profileData for public appointments
+  const userId = profileData?.userId || profileData?._id;
+
   async function handleAppointment(e) {
-    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot)
+    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot, userId)
   }
 
   // Social media icons mapping
@@ -199,14 +202,12 @@ function DeveloperTemplate({ profileData }) {
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium">{testimonial.name}</p>
+                      <h3 className="font-medium">{testimonial.name}</h3>
                       <p className="text-sm text-[#5c6b80]">{testimonial.role}</p>
                     </div>
-                    <div style={{ color: accent }}>
-                      {renderRating(testimonial.rating)}
-                    </div>
+                    {renderRating(testimonial.rating)}
                   </div>
-                  <p className="mt-3 text-sm text-[#3b4a5f]">{testimonial.feedback}</p>
+                  <p className="mt-3 text-[#5c6b80]">{testimonial.feedback}</p>
                 </div>
               </div>
             ))}

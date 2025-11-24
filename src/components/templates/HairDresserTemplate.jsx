@@ -3,25 +3,25 @@ import { Instagram, Facebook, Twitter, Linkedin, Phone, Mail, MapPin, Globe, Cal
 import { handleAppointmentSubmit, renderAppointmentForm } from './AppointmentUtils'
 
 function HairDresserTemplate({ profileData }) {
-  const accent = profileData?.accentColor || '#5de0a2'
+  const accent = profileData?.accentColor || '#e95d7b'
 
   // Use profile data or fallback to defaults
   const services = profileData?.services || [
-    { title: 'Haircuts', desc: 'Precision cuts for all hair types.' },
-    { title: 'Coloring', desc: 'Vibrant colors with premium products.' },
-    { title: 'Styling', desc: 'Event-ready looks and daily styles.' },
+    { title: 'Haircuts', desc: 'Precision cuts for all hair types and styles.' },
+    { title: 'Coloring', desc: 'Highlights, balayage, and full color services.' },
+    { title: 'Styling', desc: 'Blowouts, updos, and special occasion styling.' },
   ]
 
   const gallery = profileData?.gallery || [
-    { src: 'https://images.pexels.com/photos/3993145/pexels-photo-3993145.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/hair1/800/600' },
-    { src: 'https://images.pexels.com/photos/3993127/pexels-photo-3993127.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/hair2/800/600' },
-    { src: 'https://images.pexels.com/photos/3993138/pexels-photo-3993138.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/hair3/800/600' },
-    { src: 'https://images.pexels.com/photos/3993150/pexels-photo-3993150.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/hair4/800/600' },
+    { src: 'https://images.pexels.com/photos/3993127/pexels-photo-3993127.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/hair1/800/600' },
+    { src: 'https://images.pexels.com/photos/3993325/pexels-photo-3993325.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/hair2/800/600' },
+    { src: 'https://images.pexels.com/photos/3993328/pexels-photo-3993328.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/hair3/800/600' },
+    { src: 'https://images.pexels.com/photos/3993331/pexels-photo-3993331.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/hair4/800/600' },
   ]
 
   const products = profileData?.products || [
-    { name: 'Hair Oil', price: '$24.00', img: { src: 'https://images.pexels.com/photos/3993145/pexels-photo-3993145.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/hair5/800/600' } },
-    { name: 'Shampoo', price: '$18.00', img: { src: 'https://images.pexels.com/photos/3993127/pexels-photo-3993127.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/hair6/800/600' } },
+    { name: 'Haircut & Style', price: '$75.00', img: { src: 'https://images.pexels.com/photos/3993127/pexels-photo-3993127.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/hair5/800/600' } },
+    { name: 'Full Color', price: '$150.00', img: { src: 'https://images.pexels.com/photos/3993325/pexels-photo-3993325.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/hair6/800/600' } },
   ]
 
   // Use testimonial data or fallback to defaults
@@ -34,9 +34,9 @@ function HairDresserTemplate({ profileData }) {
       }))
     : [
         {
-          name: 'Luna Blake',
+          name: 'Sophia Williams',
           role: 'Client',
-          feedback: 'Amazing color work and a relaxing experience. Highly recommend!',
+          feedback: 'Ezra transformed my hair with an amazing color and cut. The attention to detail and personalized service is unmatched.',
           rating: 5
         }
       ];
@@ -46,8 +46,11 @@ function HairDresserTemplate({ profileData }) {
   const [appointmentMessage, setAppointmentMessage] = useState('')
   const [appointmentError, setAppointmentError] = useState('')
 
+  // Get userId from profileData for public appointments
+  const userId = profileData?.userId || profileData?._id;
+
   async function handleAppointment(e) {
-    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot)
+    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot, userId)
   }
 
   // Social media icons mapping
@@ -181,12 +184,12 @@ function HairDresserTemplate({ profileData }) {
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium">{testimonial.name}</p>
+                      <h3 className="font-medium">{testimonial.name}</h3>
                       <p className="text-sm text-[#b7d5cf]">{testimonial.role}</p>
                     </div>
                     <div style={{ color: accent }}>{renderStars(testimonial.rating)}</div>
                   </div>
-                  <p className="mt-3 text-sm text-[#d7e5e1]">{testimonial.feedback}</p>
+                  <p className="mt-3 text-[#b7d5cf]">{testimonial.feedback}</p>
                 </div>
               </div>
             ))}

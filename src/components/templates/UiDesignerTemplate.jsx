@@ -3,25 +3,25 @@ import { Instagram, Facebook, Twitter, Linkedin, Phone, Mail, MapPin, Globe, Cal
 import { handleAppointmentSubmit, renderAppointmentForm } from './AppointmentUtils'
 
 function UiDesignerTemplate({ profileData }) {
-  const accent = profileData?.accentColor || '#4ade80'
+  const accent = profileData?.accentColor || '#5de0a2'
 
   // Use profile data or fallback to defaults
   const services = profileData?.services || [
-    { title: 'UI Design', desc: 'Interfaces, design systems, and component libraries.' },
-    { title: 'UX Research', desc: 'User studies, personas, and journey mapping.' },
-    { title: 'Prototyping', desc: 'Interactive prototypes and usability testing.' },
+    { title: 'UI Design', desc: 'Pixel-perfect interfaces for web and mobile.' },
+    { title: 'UX Research', desc: 'User insights and journey mapping.' },
+    { title: 'Design Systems', desc: 'Component libraries and style guides.' },
   ]
 
   const gallery = profileData?.gallery || [
-    { src: 'https://images.pexels.com/photos/3184405/pexels-photo-3184405.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/ui1/800/600' },
-    { src: 'https://images.pexels.com/photos/3184419/pexels-photo-3184419.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/ui2/800/600' },
-    { src: 'https://images.pexels.com/photos/3184420/pexels-photo-3184420.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/ui3/800/600' },
-    { src: 'https://images.pexels.com/photos/3184421/pexels-photo-3184421.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/ui4/800/600' },
+    { src: 'https://www.training.com.au/wp-content/uploads/graphic-designer.jpeg', fallback: 'https://picsum.photos/seed/ui1/800/600' },
+    { src: 'https://images.pexels.com/photos/3184405/pexels-photo-3184405.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/ui2/800/600' },
+    { src: 'https://images.pexels.com/photos/3184416/pexels-photo-3184416.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/ui3/800/600' },
+    { src: 'https://images.pexels.com/photos/3184425/pexels-photo-3184425.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/ui4/800/600' },
   ]
 
   const products = profileData?.products || [
-    { name: 'Design System', price: '$1,999.00', img: { src: 'https://images.pexels.com/photos/3184405/pexels-photo-3184405.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/ui5/800/600' } },
-    { name: 'UX Audit', price: '$799.00', img: { src: 'https://images.pexels.com/photos/3184419/pexels-photo-3184419.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/ui6/800/600' } },
+    { name: 'UI Design Package', price: '$1,299.00', img: { src: 'https://www.training.com.au/wp-content/uploads/graphic-designer.jpeg', fallback: 'https://picsum.photos/seed/ui5/800/600' } },
+    { name: 'UX Research Session', price: '$499.00', img: { src: 'https://images.pexels.com/photos/3184405/pexels-photo-3184405.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/ui6/800/600' } },
   ]
 
   // Use testimonial data or fallback to defaults
@@ -34,9 +34,9 @@ function UiDesignerTemplate({ profileData }) {
       }))
     : [
         {
-          name: 'Alex Romero',
+          name: 'Alex Morgan',
           role: 'Product Manager',
-          feedback: 'Design system implementation was smooth and reduced our dev cycles significantly.',
+          feedback: 'Pallavi transformed our product with intuitive designs and a cohesive design system. The user engagement metrics improved significantly after the redesign.',
           rating: 5
         }
       ];
@@ -46,8 +46,11 @@ function UiDesignerTemplate({ profileData }) {
   const [appointmentMessage, setAppointmentMessage] = useState('')
   const [appointmentError, setAppointmentError] = useState('')
 
+  // Get userId from profileData for public appointments
+  const userId = profileData?.userId || profileData?._id;
+
   async function handleAppointment(e) {
-    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot)
+    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot, userId)
   }
 
   // Social media icons mapping
@@ -181,12 +184,12 @@ function UiDesignerTemplate({ profileData }) {
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium">{testimonial.name}</p>
+                      <h3 className="font-medium">{testimonial.name}</h3>
                       <p className="text-sm text-[#9fd0bd]">{testimonial.role}</p>
                     </div>
                     <div style={{ color: accent }}>{renderStars(testimonial.rating)}</div>
                   </div>
-                  <p className="mt-3 text-sm text-[#cfe9de]">{testimonial.feedback}</p>
+                  <p className="mt-3 text-[#9fd0bd]">{testimonial.feedback}</p>
                 </div>
               </div>
             ))}

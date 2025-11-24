@@ -3,33 +3,35 @@ import { Instagram, Facebook, Twitter, Youtube, Phone, Mail, MapPin, Globe, Cale
 import { handleAppointmentSubmit, renderAppointmentForm } from './AppointmentUtils'
 
 function InteriorDesignTemplate({ profileData }) {
+  const accent = profileData?.accentColor || '#f5c157'
+
   const hours = [
-    ['Saturday', '09:00 - 20:00'],
-    ['Sunday', '09:00 - 20:00'],
-    ['Monday', '09:00 - 20:00'],
-    ['Tuesday', '09:00 - 20:00'],
-    ['Wednesday', '09:00 - 20:00'],
-    ['Thursday', '09:00 - 20:00'],
-    ['Friday', '09:00 - 20:00'],
+    ['Sunday', 'Closed'],
+    ['Monday', '10:00 - 18:00'],
+    ['Tuesday', '10:00 - 18:00'],
+    ['Wednesday', '10:00 - 18:00'],
+    ['Thursday', '10:00 - 18:00'],
+    ['Friday', '10:00 - 18:00'],
+    ['Saturday', '11:00 - 16:00'],
   ]
 
   // Use profile data or fallback to defaults
   const services = profileData?.services || [
-    { title: 'Space Planning', desc: 'Layouts, flow optimization, and zoning.' },
-    { title: 'Color Consultation', desc: 'Palettes, materials, and finishes.' },
-    { title: 'Furniture Selection', desc: 'Procurement and placement guidance.' },
+    { title: 'Space Planning', desc: 'Optimize layouts for functionality and flow.' },
+    { title: 'Color Consultation', desc: 'Palettes that enhance mood and aesthetics.' },
+    { title: 'Furniture Selection', desc: 'Curated pieces that reflect your style.' },
   ]
 
   const gallery = profileData?.gallery || [
-    { src: 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/interior1/800/600' },
-    { src: 'https://images.pexels.com/photos/1571470/pexels-photo-1571470.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/interior2/800/600' },
-    { src: 'https://images.pexels.com/photos/1571471/pexels-photo-1571471.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/interior3/800/600' },
-    { src: 'https://images.pexels.com/photos/1571472/pexels-photo-1571472.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/interior4/800/600' },
+    { src: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop', fallback: 'https://picsum.photos/seed/interior1/800/600' },
+    { src: 'https://images.unsplash.com/photo-1505693250230-0b1ab53835ec?q=80&w=1200&auto=format&fit=crop', fallback: 'https://picsum.photos/seed/interior2/800/600' },
+    { src: 'https://images.unsplash.com/photo-1505693500300-0b1ab53835ec?q=80&w=1200&auto=format&fit=crop', fallback: 'https://picsum.photos/seed/interior3/800/600' },
+    { src: 'https://images.unsplash.com/photo-1505693600000-0b1ab53835ec?q=80&w=1200&auto=format&fit=crop', fallback: 'https://picsum.photos/seed/interior4/800/600' },
   ]
 
   const products = profileData?.products || [
-    { name: 'Consultation Session', price: '$199.00', img: { src: 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/interior5/800/600' } },
-    { name: 'Full Design Package', price: '$1,299.00', img: { src: 'https://images.pexels.com/photos/1571470/pexels-photo-1571470.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/interior6/800/600' } },
+    { name: 'Design Consultation', price: '$299.00', img: { src: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop', fallback: 'https://picsum.photos/seed/interior5/800/600' } },
+    { name: 'Full Room Design', price: '$1,299.00', img: { src: 'https://images.unsplash.com/photo-1505693250230-0b1ab53835ec?q=80&w=1200&auto=format&fit=crop', fallback: 'https://picsum.photos/seed/interior6/800/600' } },
   ]
 
   // Use testimonial data or fallback to defaults
@@ -54,8 +56,11 @@ function InteriorDesignTemplate({ profileData }) {
   const [appointmentMessage, setAppointmentMessage] = useState('')
   const [appointmentError, setAppointmentError] = useState('')
 
+  // Get userId from profileData for public appointments
+  const userId = profileData?.userId || profileData?._id;
+
   async function handleAppointment(e) {
-    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot)
+    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot, userId)
   }
 
   function handleContact(e) {
@@ -218,8 +223,8 @@ function InteriorDesignTemplate({ profileData }) {
           </div>
           <img
             src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent('https://studiojeff.design')}`}
-            alt="QR"
-            className="w-24 h-24 rounded-lg"
+            alt="QR Code"
+            className="w-20 h-20"
           />
         </section>
 
@@ -239,7 +244,7 @@ function InteriorDesignTemplate({ profileData }) {
           <div className="mt-6 space-y-6">
             {testimonials.map((testimonial, index) => (
               <div key={index} className="rounded-2xl bg-white p-6 shadow flex items-start gap-4">
-                <div className="w-16 h-16 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#f5c157', color: '#fff' }}>
+                <div className="w-16 h-16 rounded-xl flex items-center justify-center" style={{ backgroundColor: accent, color: '#000' }}>
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                   </svg>
@@ -247,14 +252,12 @@ function InteriorDesignTemplate({ profileData }) {
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium">{testimonial.name}</p>
+                      <h3 className="font-medium">{testimonial.name}</h3>
                       <p className="text-sm text-[#78836e]">{testimonial.role}</p>
                     </div>
-                    <div className="text-[#f5c157]">
-                      {renderRating(testimonial.rating)}
-                    </div>
+                    {renderRating(testimonial.rating)}
                   </div>
-                  <p className="mt-3 text-sm text-[#555]">{testimonial.feedback}</p>
+                  <p className="mt-3 text-[#78836e]">{testimonial.feedback}</p>
                 </div>
               </div>
             ))}

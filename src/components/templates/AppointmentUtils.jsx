@@ -1,6 +1,6 @@
-import { appointmentCreate } from '../../utils/Api';
+import { appointmentCreate, appointmentCreatePublic } from '../../utils/Api';
 
-export const handleAppointmentSubmit = async (e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot) => {
+export const handleAppointmentSubmit = async (e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot, userId) => {
   e.preventDefault();
   
   // Capture the form element before async operations
@@ -26,12 +26,25 @@ export const handleAppointmentSubmit = async (e, setAppointmentLoading, setAppoi
   setAppointmentError('');   // Clear previous errors
   
   try {
-    const response = await appointmentCreate({
-      clientName: name,
-      phone: phone,
-      appointmentDate: appointmentDateTime,
-      notes: `Appointment requested for ${slot}`
-    });
+    // Check if userId is provided (public user) or if we should use authenticated endpoint
+    let response;
+    if (userId) {
+      // Public user - use public endpoint
+      response = await appointmentCreatePublic(userId, {
+        clientName: name,
+        phone: phone,
+        appointmentDate: appointmentDateTime,
+        notes: `Appointment requested for ${slot}`
+      });
+    } else {
+      // Authenticated user - use regular endpoint
+      response = await appointmentCreate({
+        clientName: name,
+        phone: phone,
+        appointmentDate: appointmentDateTime,
+        notes: `Appointment requested for ${slot}`
+      });
+    }
     
     // Debugging: log the response to see its structure
     console.log('Appointment response:', response);

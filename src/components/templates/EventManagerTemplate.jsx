@@ -3,7 +3,7 @@ import { Instagram, Facebook, Twitter, Linkedin, Phone, Mail, MapPin, Globe, Cal
 import { handleAppointmentSubmit, renderAppointmentForm } from './AppointmentUtils'
 
 function EventManagerTemplate({ profileData }) {
-  const accent = profileData?.accentColor || '#e6b85c'
+  const accent = profileData?.accentColor || '#e97e54'
 
   const hours = [
     ['Sunday', '09:00 - 20:00'],
@@ -17,21 +17,21 @@ function EventManagerTemplate({ profileData }) {
 
   // Use profile data or fallback to defaults
   const services = profileData?.services || [
-    { title: 'Weddings', desc: 'Full planning and execution for dream weddings.' },
-    { title: 'Corporate', desc: 'Conferences, launches, and team events.' },
-    { title: 'Social', desc: 'Birthdays, anniversaries, and celebrations.' },
+    { title: 'Wedding Planning', desc: 'Full-service wedding coordination and design.' },
+    { title: 'Corporate Events', desc: 'Conferences, product launches, and team building.' },
+    { title: 'Private Parties', desc: 'Birthdays, anniversaries, and milestone celebrations.' },
   ]
 
   const gallery = profileData?.gallery || [
-    { src: 'https://images.pexels.com/photos/1181424/pexels-photo-1181424.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event1/800/600' },
-    { src: 'https://images.pexels.com/photos/1181416/pexels-photo-1181416.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event2/800/600' },
-    { src: 'https://images.pexels.com/photos/1181397/pexels-photo-1181397.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event3/800/600' },
-    { src: 'https://images.pexels.com/photos/1181398/pexels-photo-1181398.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event4/800/600' },
+    { src: 'https://images.pexels.com/photos/1165288/pexels-photo-1165288.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event1/800/600' },
+    { src: 'https://images.pexels.com/photos/1165289/pexels-photo-1165289.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event2/800/600' },
+    { src: 'https://images.pexels.com/photos/1165290/pexels-photo-1165290.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event3/800/600' },
+    { src: 'https://images.pexels.com/photos/1165291/pexels-photo-1165291.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event4/800/600' },
   ]
 
   const products = profileData?.products || [
-    { name: 'Wedding Package', price: '$4,999.00', img: { src: 'https://images.pexels.com/photos/1181424/pexels-photo-1181424.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event5/800/600' } },
-    { name: 'Corporate Event', price: '$2,499.00', img: { src: 'https://images.pexels.com/photos/1181416/pexels-photo-1181416.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event6/800/600' } },
+    { name: 'Full Wedding Package', price: '$4,999.00', img: { src: 'https://images.pexels.com/photos/1165288/pexels-photo-1165288.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event5/800/600' } },
+    { name: 'Corporate Event', price: '$2,499.00', img: { src: 'https://images.pexels.com/photos/1165289/pexels-photo-1165289.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/event6/800/600' } },
   ]
 
   // Use testimonial data or fallback to defaults
@@ -56,8 +56,11 @@ function EventManagerTemplate({ profileData }) {
   const [appointmentMessage, setAppointmentMessage] = useState('')
   const [appointmentError, setAppointmentError] = useState('')
 
+  // Get userId from profileData for public appointments
+  const userId = profileData?.userId || profileData?._id;
+
   async function handleAppointment(e) {
-    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot)
+    await handleAppointmentSubmit(e, setAppointmentLoading, setAppointmentMessage, setAppointmentError, slot, userId)
   }
 
   // Social media icons mapping
@@ -201,12 +204,12 @@ function EventManagerTemplate({ profileData }) {
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium">{testimonial.name}</p>
+                      <h3 className="font-medium">{testimonial.name}</h3>
                       <p className="text-sm text-[#cdbbaa]">{testimonial.role}</p>
                     </div>
                     <div style={{ color: accent }}>{renderStars(testimonial.rating)}</div>
                   </div>
-                  <p className="mt-3 text-sm text-[#e0d6c9]">{testimonial.feedback}</p>
+                  <p className="mt-3 text-[#cdbbaa]">{testimonial.feedback}</p>
                 </div>
               </div>
             ))}
@@ -237,28 +240,9 @@ function EventManagerTemplate({ profileData }) {
           </div>
           <img
             src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent('https://grandstudio.events')}`}
-            alt="QR"
-            className="w-24 h-24 rounded-lg"
+            alt="QR Code"
+            className="w-20 h-20"
           />
-        </section>
-
-        <section className="mt-12">
-          <h2 className="text-2xl font-semibold">Contact Us</h2>
-          <form onSubmit={(e)=>{e.preventDefault(); alert('Message sent')}} className="mt-6 rounded-2xl bg-[#1b1715] p-6 shadow grid sm:grid-cols-2 gap-4">
-            <input name="cname" placeholder="Your name" className="px-3 py-2 rounded-lg bg-[#2a2320] text-[#f1e9df]" />
-            <input type="email" name="email" placeholder="Email" className="px-3 py-2 rounded-lg bg-[#2a2320] text-[#f1e9df]" />
-            <input name="cphone" placeholder="Phone number" className="px-3 py-2 rounded-lg bg-[#2a2320] text-[#f1e9df]" />
-            <textarea name="message" placeholder="Your message" rows={3} className="px-3 py-2 rounded-lg bg-[#2a2320] text-[#f1e9df] sm:col-span-2" />
-            <button className="sm:col-span-2 px-4 py-2 rounded-lg" style={{ backgroundColor: accent, color: '#14110f' }}>Send Message</button>
-          </form>
-        </section>
-
-        <section className="mt-12 mb-8 rounded-2xl bg-[#1b1715] p-6 shadow flex items-center justify-between">
-          <div>
-            <p className="font-medium">Your vCard</p>
-            <p className="text-sm text-[#cdbbaa]">Tap to save contact details to your phone.</p>
-          </div>
-          <button className="px-4 py-2 rounded-lg" style={{ backgroundColor: accent, color: '#14110f' }}>Add to Wallet</button>
         </section>
       </div>
     </div>

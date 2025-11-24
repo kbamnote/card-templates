@@ -110,6 +110,7 @@ export const testimonialDelete = (id) => Api.delete(`/testimonials/${id}`);
 
 // ============== Appointment ==============
 export const appointmentCreate = (post) => Api.post("/appointments/", post);
+export const appointmentCreatePublic = (userId, post) => Apiauth.post(`/appointments/public/${userId}`, post);
 export const apponitmentRead = () => Api.get("/appointments/my");
 export const apponitmentReadPublic = (userId) => Api.get(`/appointments/public/${userId}`);
 export const apponitmentReadById = (id) => Api.get(`/appointments/${id}`);
