@@ -103,7 +103,7 @@ function MobileFashionBoutique({ profileData }) {
     <div className="min-h-screen bg-gradient-to-b from-pink-50 to-rose-50 text-gray-900">
       {/* Hero Banner - Mobile First */}
       <section className="relative">
-        <div className="h-64 overflow-hidden">
+        <div className="h-48 md:h-64 overflow-hidden">
           <img
             src={profileData?.bannerImg || "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"}
             onError={(e)=>{e.currentTarget.src='https://picsum.photos/seed/fashionhero/1200/600'}}
@@ -111,11 +111,11 @@ function MobileFashionBoutique({ profileData }) {
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
-          <h2 className="text-2xl font-bold text-white">Summer Collection 2023</h2>
-          <p className="text-pink-200 mt-1">Up to 50% off selected items</p>
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 md:p-6">
+          <h2 className="text-xl md:text-2xl font-bold text-white">Summer Collection 2023</h2>
+          <p className="text-pink-200 text-sm mt-1">Up to 50% off selected items</p>
           <button 
-            className="mt-3 px-6 py-2 bg-white text-pink-600 font-bold rounded-full text-sm"
+            className="mt-3 px-4 py-2 bg-white text-pink-600 font-bold rounded-full text-sm"
             style={{ color: accent }}
           >
             Shop Now
@@ -124,9 +124,9 @@ function MobileFashionBoutique({ profileData }) {
       </section>
 
       {/* Profile Section - Stacked for Mobile */}
-      <section className="bg-white py-6 px-6 -mt-8 rounded-t-3xl shadow-lg relative z-10">
+      <section className="bg-white py-6 px-4 md:px-6 -mt-8 rounded-t-3xl shadow-lg relative z-10">
         <div className="flex flex-col items-center">
-          <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-lg -mt-12">
+          <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-4 border-white shadow-lg -mt-10 md:-mt-12">
             <img
               src={profileData?.profileImg || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"}
               onError={(e)=>{e.currentTarget.src='https://picsum.photos/seed/fashionprofile/400/400'}}
@@ -134,10 +134,10 @@ function MobileFashionBoutique({ profileData }) {
               className="w-full h-full object-cover"
             />
           </div>
-          <h2 className="text-xl font-bold mt-3">{profileData?.name || "Emma Richardson"}</h2>
-          <p className="text-gray-600 text-center mt-1">{profileData?.profession || "Fashion Designer & Stylist"}</p>
+          <h2 className="text-lg md:text-xl font-bold mt-3 text-center">{profileData?.name || "Emma Richardson"}</h2>
+          <p className="text-gray-600 text-center text-sm mt-1">{profileData?.profession || "Fashion Designer & Stylist"}</p>
           
-          <div className="flex mt-4 space-x-3">
+          <div className="flex mt-4 space-x-2 md:space-x-3">
             {Object.entries(profileData?.socialMedia || {}).map(([platform, url]) => {
               const Icon = socialIcons[platform];
               if (!Icon || !url) return null;
@@ -145,10 +145,10 @@ function MobileFashionBoutique({ profileData }) {
                 <a 
                   key={platform} 
                   href={url} 
-                  className="w-10 h-10 rounded-full flex items-center justify-center"
+                  className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center"
                   style={{ backgroundColor: `${accent}20` }}
                 >
-                  <Icon size={18} style={{ color: accent }} />
+                  <Icon size={16} className="md:size-18" style={{ color: accent }} />
                 </a>
               );
             })}
@@ -156,54 +156,54 @@ function MobileFashionBoutique({ profileData }) {
         </div>
         
         {/* Contact Info - Vertical Stack */}
-        <div className="mt-6 grid grid-cols-2 gap-3">
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-3">
           <div className="flex items-center bg-pink-50 p-3 rounded-lg">
-            <Mail size={18} style={{ color: accent }} className="mr-2" />
-            <span className="text-sm">{profileData?.email || "contact@chicboutique.com"}</span>
+            <Mail size={16} className="md:size-18 mr-2" style={{ color: accent }} />
+            <span className="text-xs md:text-sm">{profileData?.email || "contact@chicboutique.com"}</span>
           </div>
           <div className="flex items-center bg-pink-50 p-3 rounded-lg">
-            <Phone size={18} style={{ color: accent }} className="mr-2" />
-            <span className="text-sm">{profileData?.phone1 || "+1 (555) 234-5678"}</span>
+            <Phone size={16} className="md:size-18 mr-2" style={{ color: accent }} />
+            <span className="text-xs md:text-sm">{profileData?.phone1 || "+1 (555) 234-5678"}</span>
           </div>
           <div className="flex items-center bg-pink-50 p-3 rounded-lg">
-            <MapPin size={18} style={{ color: accent }} className="mr-2" />
-            <span className="text-sm">{profileData?.location || "New York, NY"}</span>
+            <MapPin size={16} className="md:size-18 mr-2" style={{ color: accent }} />
+            <span className="text-xs md:text-sm">{profileData?.location || "New York, NY"}</span>
           </div>
           <div className="flex items-center bg-pink-50 p-3 rounded-lg">
-            <Globe size={18} style={{ color: accent }} className="mr-2" />
-            <span className="text-sm">{profileData?.websiteLink || "www.chicboutique.com"}</span>
+            <Globe size={16} className="md:size-18 mr-2" style={{ color: accent }} />
+            <span className="text-xs md:text-sm">{profileData?.websiteLink || "www.chicboutique.com"}</span>
           </div>
         </div>
       </section>
 
       {/* Services - Horizontal Scroll for Mobile */}
-      <section className="py-8 px-6 bg-rose-50">
-        <h2 className="text-2xl font-bold mb-4">Our Services</h2>
+      <section className="py-6 md:py-8 px-4 md:px-6 bg-rose-50">
+        <h2 className="text-xl md:text-2xl font-bold mb-4">Our Services</h2>
         <div className="flex overflow-x-auto pb-4 space-x-4 scrollbar-hide">
           {services.map((service, index) => (
-            <div key={index} className="flex-shrink-0 w-64 bg-white rounded-2xl p-5 shadow-md">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center mb-3" style={{ backgroundColor: `${accent}20` }}>
-                <div className="text-lg" style={{ color: accent }}>
+            <div key={index} className="flex-shrink-0 w-56 md:w-64 bg-white rounded-2xl p-4 md:p-5 shadow-md">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center mb-2 md:mb-3" style={{ backgroundColor: `${accent}20` }}>
+                <div className="text-base md:text-lg" style={{ color: accent }}>
                   {index === 0 ? '👗' : index === 1 ? '🧳' : '🌸'}
                 </div>
               </div>
-              <h3 className="font-bold text-lg">{service.title}</h3>
-              <p className="text-gray-600 text-sm mt-2">{service.desc}</p>
+              <h3 className="font-bold text-base md:text-lg">{service.title}</h3>
+              <p className="text-gray-600 text-xs md:text-sm mt-2">{service.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Products - Grid Optimized for Mobile */}
-      <section className="py-8 px-6 bg-white">
+      <section className="py-6 md:py-8 px-4 md:px-6 bg-white">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold">Featured Products</h2>
+          <h2 className="text-xl md:text-2xl font-bold">Featured Products</h2>
           <button className="text-pink-500 text-sm font-medium" style={{ color: accent }}>
             See All
           </button>
         </div>
         
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3 md:gap-4">
           {products.map((product, index) => (
             <div key={index} className="bg-rose-50 rounded-2xl overflow-hidden shadow-sm">
               <div className="relative">
@@ -211,18 +211,18 @@ function MobileFashionBoutique({ profileData }) {
                   src={product.img?.src} 
                   onError={(e)=>{e.currentTarget.src=product.img?.fallback}} 
                   alt={product.name} 
-                  className="w-full h-40 object-cover"
+                  className="w-full h-32 md:h-40 object-cover"
                 />
-                <button className="absolute top-2 right-2 p-2 bg-white rounded-full shadow">
-                  <Heart size={16} className="text-gray-700" />
+                <button className="absolute top-2 right-2 p-1.5 md:p-2 bg-white rounded-full shadow">
+                  <Heart size={14} className="md:size-16 text-gray-700" />
                 </button>
               </div>
-              <div className="p-3">
-                <h3 className="font-bold text-sm">{product.name}</h3>
+              <div className="p-2 md:p-3">
+                <h3 className="font-bold text-xs md:text-sm">{product.name}</h3>
                 <div className="flex items-center justify-between mt-2">
-                  <span className="font-bold text-pink-600" style={{ color: accent }}>{product.price}</span>
-                  <button className="p-1.5 bg-pink-500 rounded-full" style={{ backgroundColor: accent }}>
-                    <ShoppingCart size={14} className="text-white" />
+                  <span className="font-bold text-pink-600 text-sm" style={{ color: accent }}>{product.price}</span>
+                  <button className="p-1 md:p-1.5 bg-pink-500 rounded-full" style={{ backgroundColor: accent }}>
+                    <ShoppingCart size={12} className="md:size-14 text-white" />
                   </button>
                 </div>
               </div>
@@ -232,13 +232,13 @@ function MobileFashionBoutique({ profileData }) {
       </section>
 
       {/* Gallery - Masonry Style for Mobile */}
-      <section className="py-8 px-6 bg-rose-50">
-        <h2 className="text-2xl font-bold mb-4">Gallery</h2>
-        <div className="columns-2 gap-4">
+      <section className="py-6 md:py-8 px-4 md:px-6 bg-rose-50">
+        <h2 className="text-xl md:text-2xl font-bold mb-4">Gallery</h2>
+        <div className="columns-2 gap-3 md:gap-4">
           {gallery.map((item, index) => (
             <div 
               key={index} 
-              className="mb-4 break-inside-avoid rounded-2xl overflow-hidden shadow-md cursor-pointer"
+              className="mb-3 md:mb-4 break-inside-avoid rounded-2xl overflow-hidden shadow-md cursor-pointer"
               onClick={() => openGallery(index)}
             >
               <img 
@@ -253,25 +253,25 @@ function MobileFashionBoutique({ profileData }) {
       </section>
 
       {/* Testimonials - Carousel for Mobile */}
-      <section className="py-8 px-6 bg-white">
-        <h2 className="text-2xl font-bold mb-4">Customer Reviews</h2>
+      <section className="py-6 md:py-8 px-4 md:px-6 bg-white">
+        <h2 className="text-xl md:text-2xl font-bold mb-4">Customer Reviews</h2>
         <div className="overflow-x-auto pb-4 scrollbar-hide">
-          <div className="flex space-x-4" style={{ minWidth: 'calc(100% * 2)' }}>
+          <div className="flex space-x-4" style={{ minWidth: 'calc(100% * 1.5)' }}>
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="flex-shrink-0 w-80 bg-rose-50 rounded-2xl p-5">
+              <div key={index} className="flex-shrink-0 w-72 md:w-80 bg-rose-50 rounded-2xl p-4 md:p-5">
                 <div className="flex items-center">
-                  <div className="w-12 h-12 rounded-full bg-pink-100 flex items-center justify-center">
-                    <span className="font-bold text-pink-600" style={{ color: accent }}>SW</span>
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-pink-100 flex items-center justify-center">
+                    <span className="font-bold text-pink-600 text-sm md:text-base" style={{ color: accent }}>SW</span>
                   </div>
-                  <div className="ml-3">
-                    <h3 className="font-bold">{testimonial.name}</h3>
-                    <p className="text-gray-600 text-sm">{testimonial.role}</p>
+                  <div className="ml-2 md:ml-3">
+                    <h3 className="font-bold text-sm md:text-base">{testimonial.name}</h3>
+                    <p className="text-gray-600 text-xs md:text-sm">{testimonial.role}</p>
                   </div>
                 </div>
-                <div className="mt-3">
+                <div className="mt-2 md:mt-3">
                   {renderRating(testimonial.rating)}
                 </div>
-                <p className="mt-3 text-gray-600 text-sm">"{testimonial.feedback}"</p>
+                <p className="mt-2 md:mt-3 text-gray-600 text-xs md:text-sm">"{testimonial.feedback}"</p>
               </div>
             ))}
           </div>
@@ -279,10 +279,10 @@ function MobileFashionBoutique({ profileData }) {
       </section>
 
       {/* Appointment Section */}
-      <section className="py-8 px-6 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-t-3xl">
-        <h2 className="text-2xl font-bold mb-2">Book a Styling Session</h2>
-        <p className="text-pink-100 mb-4">Schedule a consultation with our fashion experts</p>
-        <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
+      <section className="py-6 md:py-8 px-4 md:px-6 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-t-3xl">
+        <h2 className="text-xl md:text-2xl font-bold mb-2">Book a Styling Session</h2>
+        <p className="text-pink-100 text-sm mb-4">Schedule a consultation with our fashion experts</p>
+        <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-3 md:p-4">
           {renderAppointmentForm(handleAppointment, appointmentMessage, appointmentError, appointmentLoading, slot, setSlot, accent)}
         </div>
       </section>
