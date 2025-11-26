@@ -6,6 +6,7 @@ import EditModal from '../modals/EditModal';
 import ListsModal from '../modals/ListsModal';
 import TemplateSelector from '../templates/TemplateSelector';
 import { profileRead, profileUpdate, serviceRead, galleryRead, productRead, testimonialRead } from '../../utils/Api';
+import Cookies from 'js-cookie';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -21,6 +22,9 @@ const Header = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [currentTemplate, setCurrentTemplate] = useState('template1');
   const dropdownRef = useRef(null);
+
+  // Check if user is authenticated
+  const isAuthenticated = !!Cookies.get("card-token");
 
   // Template options with descriptive names
   const templateOptions = [
@@ -38,6 +42,13 @@ const Header = () => {
   ];
 
   const handleLoginClick = () => {
+    navigate('/login');
+  };
+
+  const handleLogout = () => {
+    // Remove the authentication token
+    Cookies.remove("card-token");
+    // Redirect to login page
     navigate('/login');
   };
 
@@ -248,13 +259,22 @@ const Header = () => {
               )}
             </div>
             
-            {/* Login button */}
-            <button
-              onClick={handleLoginClick}
-              className="bg-green-500 hover:bg-green-400 text-white font-medium py-2 px-4 transition duration-300 ease-in-out transform hover:scale-105"
-            >
-              Login
-            </button>
+            {/* Login/Logout button */}
+            {isAuthenticated ? (
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 transition duration-300 ease-in-out transform hover:scale-105"
+              >
+                Logout
+              </button>
+            ) : (
+              <button
+                onClick={handleLoginClick}
+                className="bg-green-500 hover:bg-green-400 text-white font-medium py-2 px-4 transition duration-300 ease-in-out transform hover:scale-105"
+              >
+                Login
+              </button>
+            )}
           </div>
         </div>
       </div>
