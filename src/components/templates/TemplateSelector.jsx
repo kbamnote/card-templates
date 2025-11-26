@@ -12,7 +12,15 @@ const TemplateSelector = ({ currentTemplate, onTemplateChange }) => {
     { id: 'template8', name: 'Lawyer', thumbnail: 'lawyer' },
     { id: 'template9', name: 'Music Portfolio', thumbnail: 'music' },
     { id: 'template10', name: 'Taxi Service', thumbnail: 'taxi' },
-    { id: 'template11', name: 'UI Designer', thumbnail: 'ui' }
+    { id: 'template11', name: 'UI Designer', thumbnail: 'ui' },
+    { id: 'template12', name: 'Photographer', thumbnail: 'photo' },
+    { id: 'template13', name: 'Restaurant', thumbnail: 'rest' },
+    { id: 'template14', name: 'Fitness Trainer', thumbnail: 'fit' },
+    { id: 'template15', name: 'Real Estate Agent', thumbnail: 'real' },
+    { id: 'template20', name: 'Fashion Boutique', thumbnail: 'fashion' },
+    { id: 'template21', name: 'Tech Consultant', thumbnail: 'techcon' },
+    { id: 'template22', name: 'Wellness Coach', thumbnail: 'wellness' },
+    { id: 'template23', name: 'Creative Studio', thumbnail: 'studio' }
   ];
 
   const handleTemplateSelect = (templateId) => {

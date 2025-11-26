@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { Instagram, Facebook, Twitter, Youtube, Phone, Mail, MapPin, Globe, Calendar } from 'lucide-react'
+import { Instagram, Facebook, Twitter, Linkedin, Youtube, Phone, Mail, MapPin, Globe, Calendar } from 'lucide-react'
 import { handleAppointmentSubmit, renderAppointmentForm } from './AppointmentUtils'
+import GalleryModal from './GalleryModal'
 
 function InteriorDesignTemplate({ profileData }) {
   const accent = profileData?.accentColor || '#f5c157'
@@ -95,6 +96,28 @@ function InteriorDesignTemplate({ profileData }) {
     );
   };
 
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+
+  const openGallery = (index) => {
+    setSelectedImageIndex(index);
+  };
+
+  const closeGallery = () => {
+    setSelectedImageIndex(null);
+  };
+
+  const nextImage = () => {
+    setSelectedImageIndex((prevIndex) => 
+      prevIndex === null ? 0 : (prevIndex + 1) % gallery.length
+    );
+  };
+
+  const prevImage = () => {
+    setSelectedImageIndex((prevIndex) => 
+      prevIndex === null ? 0 : (prevIndex - 1 + gallery.length) % gallery.length
+    );
+  };
+
   return (
     <div className="min-h-screen bg-[#f5f3ed] text-[#333]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -169,7 +192,14 @@ function InteriorDesignTemplate({ profileData }) {
           <h2 className="text-2xl font-semibold">Gallery</h2>
           <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
             {gallery.map((g, i) => (
-              <img key={i} src={g.src} onError={(e)=>{e.currentTarget.src=g.fallback}} alt="Project" className="rounded-xl h-36 sm:h-44 w-full object-cover shadow" />
+              <img 
+                key={i} 
+                src={g.src} 
+                onError={(e)=>{e.currentTarget.src=g.fallback}} 
+                alt="Project" 
+                className="rounded-xl h-36 sm:h-44 w-full object-cover shadow cursor-pointer" 
+                onClick={() => openGallery(i)}
+              />
             ))}
           </div>
         </section>
@@ -263,6 +293,15 @@ function InteriorDesignTemplate({ profileData }) {
             ))}
           </div>
         </section>
+        {selectedImageIndex !== null && (
+          <GalleryModal 
+            images={gallery}
+            currentIndex={selectedImageIndex}
+            onClose={closeGallery}
+            onNext={nextImage}
+            onPrev={prevImage}
+          />
+        )}
       </div>
     </div>
   )

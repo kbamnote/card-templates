@@ -1,12 +1,34 @@
 import { useState } from 'react';
-import { Instagram, Facebook, Twitter, Youtube, Phone, Mail, MapPin, Globe, Calendar, Music, Mic2, Headphones, Guitar, Star, Image, ShoppingCart } from 'lucide-react';
+import { Instagram, Facebook, Twitter, Linkedin, Youtube, Phone, Mail, MapPin, Globe, Calendar, User, Music, Play, Image, Video, Calendar as CalendarIcon, Star, ShoppingCart } from 'lucide-react';
 import { handleAppointmentSubmit, renderAppointmentForm } from './AppointmentUtils';
+import GalleryModal from './GalleryModal';
 
 function MusicPortfolio({ profileData }) {
   const [slot, setSlot] = useState('10:00');
   const [appointmentLoading, setAppointmentLoading] = useState(false);
   const [appointmentMessage, setAppointmentMessage] = useState('');
   const [appointmentError, setAppointmentError] = useState('');
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+
+  const openGallery = (index) => {
+    setSelectedImageIndex(index);
+  };
+
+  const closeGallery = () => {
+    setSelectedImageIndex(null);
+  };
+
+  const nextImage = () => {
+    setSelectedImageIndex((prevIndex) => 
+      prevIndex === null ? 0 : (prevIndex + 1) % gallery.length
+    );
+  };
+
+  const prevImage = () => {
+    setSelectedImageIndex((prevIndex) => 
+      prevIndex === null ? 0 : (prevIndex - 1 + gallery.length) % gallery.length
+    );
+  };
 
   // Get userId from profileData for public appointments
   const userId = profileData?.userId || profileData?._id;
@@ -19,6 +41,7 @@ function MusicPortfolio({ profileData }) {
     instagram: <Instagram size={20} />,
     facebook: <Facebook size={20} />,
     twitter: <Twitter size={20} />,
+    linkedin: <Linkedin size={20} />,
     youtube: <Youtube size={20} />,
   };
 
@@ -26,14 +49,15 @@ function MusicPortfolio({ profileData }) {
     instagram: "bg-pink-600",
     facebook: "bg-blue-600",
     twitter: "bg-sky-500",
+    linkedin: "bg-blue-800",
     youtube: "bg-red-600",
   };
 
   // Use profile data or fallback to defaults
   const services = profileData?.services || [
-    { icon: <Mic2 size={22} />, label: "Live Shows" },
-    { icon: <Headphones size={22} />, label: "Studio Work" },
-    { icon: <Guitar size={22} />, label: "Collabs" },
+    { title: 'Live Shows', desc: 'Professional live performances for events and venues.' },
+    { title: 'Studio Work', desc: 'Recording and production services in our state-of-the-art studio.' },
+    { title: 'Collabs', desc: 'Collaboration opportunities with other artists and producers.' },
   ];
 
   const gallery = profileData?.gallery || [
@@ -152,7 +176,7 @@ function MusicPortfolio({ profileData }) {
                 <MapPin size={18} /> <span>{profileData?.location || "New York, USA"}</span>
               </div>
               <div className="flex items-center gap-2">
-                <Calendar size={18} /> <span>Since 2018</span>
+                <CalendarIcon size={18} /> <span>Since 2018</span>
               </div>
             </div>
           </div>
@@ -168,8 +192,11 @@ function MusicPortfolio({ profileData }) {
                   key={i}
                   className="flex flex-col items-center justify-center bg-white/10 p-4 rounded-xl hover:bg-blue-600/40 transition"
                 >
-                  {service.icon}
-                  <span className="mt-1">{service.label}</span>
+                  <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center mb-2">
+                    <Music size={24} className="text-blue-400" />
+                  </div>
+                  <h4 className="font-medium">{service.title}</h4>
+                  <p className="mt-1 text-xs text-gray-400 text-center">{service.desc}</p>
                 </div>
               ))}
             </div>
@@ -189,20 +216,22 @@ function MusicPortfolio({ profileData }) {
                   onError={(e)=>{e.currentTarget.src=g.fallback}}
                   alt="Gallery"
                   loading="lazy"
-                  className="w-full h-28 sm:h-32 md:h-36 lg:h-40 object-cover rounded-xl"
+                  className="w-full h-28 sm:h-32 md:h-36 lg:h-40 object-cover rounded-xl cursor-pointer"
+                  onClick={() => openGallery(i)}
                 />
               ))}
             </div>
+
           </div>
 
           <div className="bg-white/10 rounded-2xl p-4 sm:p-5 mb-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg sm:text-xl font-semibold text-white/90 flex items-center gap-2">
-                <Calendar size={20} /> Make an Appointment
+                <CalendarIcon size={20} /> Make an Appointment
               </h3>
             </div>
             <div className="mt-4 rounded-2xl bg-white/10 p-6 shadow">
-              {renderAppointmentForm(handleAppointment, appointmentMessage, appointmentError, appointmentLoading, slot, setSlot)}
+              {renderAppointmentForm(handleAppointment, appointmentMessage, appointmentError, appointmentLoading, slot, setSlot, '#3b82f6')}
             </div>
           </div>
 
@@ -249,6 +278,15 @@ function MusicPortfolio({ profileData }) {
           </div>
         </div>
       </div>
+      {selectedImageIndex !== null && (
+        <GalleryModal 
+          images={gallery}
+          currentIndex={selectedImageIndex}
+          onClose={closeGallery}
+          onNext={nextImage}
+          onPrev={prevImage}
+        />
+      )}
     </div>
   );
 }

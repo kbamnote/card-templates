@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { Instagram, Facebook, Twitter, Linkedin, Phone, Mail, MapPin, Globe, Calendar } from 'lucide-react'
+import { Instagram, Facebook, Twitter, Linkedin, Youtube, Phone, Mail, MapPin, Globe, Calendar } from 'lucide-react'
 import { handleAppointmentSubmit, renderAppointmentForm } from './AppointmentUtils'
+import GalleryModal from './GalleryModal'
 
 function LawyerTemplate({ profileData }) {
   const accent = profileData?.accentColor || '#c9a15e'
@@ -82,6 +83,28 @@ function LawyerTemplate({ profileData }) {
           </span>
         ))}
       </div>
+    );
+  };
+
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+
+  const openGallery = (index) => {
+    setSelectedImageIndex(index);
+  };
+
+  const closeGallery = () => {
+    setSelectedImageIndex(null);
+  };
+
+  const nextImage = () => {
+    setSelectedImageIndex((prevIndex) => 
+      prevIndex === null ? 0 : (prevIndex + 1) % gallery.length
+    );
+  };
+
+  const prevImage = () => {
+    setSelectedImageIndex((prevIndex) => 
+      prevIndex === null ? 0 : (prevIndex - 1 + gallery.length) % gallery.length
     );
   };
 
@@ -168,7 +191,14 @@ function LawyerTemplate({ profileData }) {
           <h2 className="text-2xl font-semibold">Gallery</h2>
           <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {gallery.map((g, i) => (
-              <img key={i} src={g.src} onError={(e)=>{e.currentTarget.src=g.fallback}} alt="Law" className="rounded-xl h-36 sm:h-44 w-full object-cover shadow" />
+              <img 
+                key={i} 
+                src={g.src} 
+                onError={(e)=>{e.currentTarget.src=g.fallback}} 
+                alt="Law" 
+                className="rounded-xl h-36 sm:h-44 w-full object-cover shadow cursor-pointer" 
+                onClick={() => openGallery(i)}
+              />
             ))}
           </div>
         </section>
@@ -212,6 +242,15 @@ function LawyerTemplate({ profileData }) {
             ))}
           </div>
         </section>
+        {selectedImageIndex !== null && (
+          <GalleryModal 
+            images={gallery}
+            currentIndex={selectedImageIndex}
+            onClose={closeGallery}
+            onNext={nextImage}
+            onPrev={prevImage}
+          />
+        )}
       </div>
     </div>
   )

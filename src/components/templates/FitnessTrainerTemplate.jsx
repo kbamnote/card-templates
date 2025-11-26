@@ -3,26 +3,26 @@ import { Instagram, Facebook, Twitter, Linkedin, Youtube, Phone, Mail, MapPin, G
 import { handleAppointmentSubmit, renderAppointmentForm } from './AppointmentUtils'
 import GalleryModal from './GalleryModal'
 
-function TaxiTemplate({ profileData }) {
-  const accent = profileData?.accentColor || '#f5c157'
+function FitnessTrainerTemplate({ profileData }) {
+  const accent = profileData?.accentColor || '#2ecc71'
 
   // Use profile data or fallback to defaults
   const services = profileData?.services || [
-    { title: 'City Rides', desc: 'Reliable transportation for daily commutes.' },
-    { title: 'Airport Transfers', desc: 'Punctual pickups and drop-offs to/from airports.' },
-    { title: 'Event Services', desc: 'Chauffeur services for special occasions.' },
+    { title: 'Personal Training', desc: 'One-on-one customized workout programs.' },
+    { title: 'Group Classes', desc: 'High-energy group fitness sessions.' },
+    { title: 'Nutrition Coaching', desc: 'Meal plans and dietary guidance.' },
   ]
 
   const gallery = profileData?.gallery || [
-    { src: 'https://vault.com/_next/image?url=https:%2F%2Ffcg.infobase.com%2Fmedia%2Fko0ghf3w%2Ftrn-taxdri-001-h.jpg&w=1200&q=75', fallback: 'https://picsum.photos/seed/taxi1/800/600' },
-    { src: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=1200&auto=format&fit=crop', fallback: 'https://picsum.photos/seed/taxi2/800/600' },
-    { src: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1200&auto=format&fit=crop', fallback: 'https://picsum.photos/seed/taxi3/800/600' },
-    { src: 'https://images.unsplash.com/photo-1542362567-b07e54358753?q=80&w=1200&auto=format&fit=crop', fallback: 'https://picsum.photos/seed/taxi4/800/600' },
+    { src: 'https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/fit1/800/600' },
+    { src: 'https://images.pexels.com/photos/1181244/pexels-photo-1181244.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/fit2/800/600' },
+    { src: 'https://images.pexels.com/photos/1181272/pexels-photo-1181272.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/fit3/800/600' },
+    { src: 'https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/fit4/800/600' },
   ]
 
   const products = profileData?.products || [
-    { name: 'Hourly Service', price: '$35.00/hr', img: { src: 'https://vault.com/_next/image?url=https:%2F%2Ffcg.infobase.com%2Fmedia%2Fko0ghf3w%2Ftrn-taxdri-001-h.jpg&w=1200&q=75', fallback: 'https://picsum.photos/seed/taxi5/800/600' } },
-    { name: 'Airport Transfer', price: '$45.00', img: { src: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=1200&auto=format&fit=crop', fallback: 'https://picsum.photos/seed/taxi6/800/600' } },
+    { name: 'Monthly Training Package', price: '$199.00', img: { src: 'https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/fit5/800/600' } },
+    { name: 'Nutrition Guide', price: '$49.00', img: { src: 'https://images.pexels.com/photos/1181244/pexels-photo-1181244.jpeg?auto=compress&cs=tinysrgb&w=1200', fallback: 'https://picsum.photos/seed/fit6/800/600' } },
   ]
 
   // Use testimonial data or fallback to defaults
@@ -35,9 +35,9 @@ function TaxiTemplate({ profileData }) {
       }))
     : [
         {
-          name: 'Robert Johnson',
-          role: 'Business Traveler',
-          feedback: 'Punctual, professional, and safe driver. Highly recommend for airport transfers and city rides.',
+          name: 'Jennifer Smith',
+          role: 'Fitness Enthusiast',
+          feedback: 'Transformed my fitness journey completely. Professional and motivating!',
           rating: 5
         }
       ];
@@ -59,6 +59,7 @@ function TaxiTemplate({ profileData }) {
     facebook: Facebook,
     instagram: Instagram,
     twitter: Twitter,
+    linkedin: Linkedin,
     youtube: Youtube,
     whatsapp: Phone
   }
@@ -99,34 +100,44 @@ function TaxiTemplate({ profileData }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f] text-[#eaeaea]">
+    <div className="min-h-screen bg-[#f4fff9] text-[#0a3a1d]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <section className="relative overflow-hidden rounded-2xl">
           <img
-            src={profileData?.bannerImg || "https://vault.com/_next/image?url=https:%2F%2Ffcg.infobase.com%2Fmedia%2Fko0ghf3w%2Ftrn-taxdri-001-h.jpg&w=1200&q=75"}
-            onError={(e)=>{e.currentTarget.src='https://picsum.photos/seed/taxihero/1600/400'}}
-            alt="Taxi hero"
+            src={profileData?.bannerImg || "https://images.pexels.com/photos/3810396/pexels-photo-3810396.jpeg?auto=compress&cs=tinysrgb&w=1600"}
+            onError={(e)=>{e.currentTarget.src='https://picsum.photos/seed/fithero/1600/400'}}
+            alt="Fitness banner"
             className="w-full h-40 sm:h-[320px] object-cover"
           />
         </section>
 
         <section className="mt-4">
-          <div className="bg-[#161616] rounded-2xl p-4 shadow flex items-center gap-4">
+          <div className="bg-white rounded-2xl p-4 shadow flex items-center gap-4">
             <img
-              src={profileData?.profileImg || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=400&auto=format&fit=crop"}
-              onError={(e)=>{e.currentTarget.src='https://picsum.photos/seed/taxiprofile/200/200'}}
-              alt="Driver profile"
+              src={profileData?.profileImg || "https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=400"}
+              onError={(e)=>{e.currentTarget.src='https://picsum.photos/seed/fitprofile/200/200'}}
+              alt="Fitness trainer profile"
               className="w-16 h-16 rounded-full object-cover"
             />
             <div className="flex-1">
-              <h1 className="text-xl sm:text-2xl font-semibold">{profileData?.name || "Jeff Murray"}</h1>
-              <p className="text-[#a9a9a9]">{profileData?.profession || "Taxi Services • 24/7 Rides"}</p>
-              <div className="mt-3 flex gap-2">
+              <div className="flex items-center gap-2">
+                <h1 className="text-xl sm:text-2xl font-semibold">{profileData?.name || "Mike Johnson"}</h1>
+                {profileData?.logoImg && (
+                  <img 
+                    src={profileData.logoImg} 
+                    alt="Company Logo" 
+                    className="h-8 w-auto"
+                    onError={(e) => {e.currentTarget.style.display = 'none'}}
+                  />
+                )}
+              </div>
+              <p className="text-[#5c6b80]">{profileData?.profession || "Certified Fitness Trainer • Strength & Conditioning"}</p>
+              <div className="mt-3 flex flex-wrap gap-2">
                 {Object.entries(profileData?.socialMedia || {}).map(([platform, url]) => {
                   const Icon = socialIcons[platform];
                   if (!Icon || !url) return null;
                   return (
-                    <a key={platform} href={url} className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: accent, color: '#000' }}>
+                    <a key={platform} href={url} className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: accent, color: '#fff' }}>
                       <Icon size={18} />
                     </a>
                   );
@@ -136,56 +147,56 @@ function TaxiTemplate({ profileData }) {
           </div>
         </section>
 
-        <section className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="rounded-xl bg-[#161616] p-4 shadow">
-            <p className="text-sm text-[#a9a9a9]">Email</p>
-            <p className="font-medium break-all">{profileData?.email || "rides@citycab.com"}</p>
+        <section className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="rounded-xl bg-white p-4 shadow">
+            <p className="text-sm text-[#5c6b80]">Email</p>
+            <p className="font-medium break-all">{profileData?.email || "mike@fitnesspro.com"}</p>
           </div>
-          <div className="rounded-xl bg-[#161616] p-4 shadow">
-            <p className="text-sm text-[#a9a9a9]">Phone</p>
-            <p className="font-medium break-all">{profileData?.phone1 || "+1 (555) 220-7788"}</p>
+          <div className="rounded-xl bg-white p-4 shadow">
+            <p className="text-sm text-[#5c6b80]">Phone</p>
+            <p className="font-medium break-all">{profileData?.phone1 || "+1 (555) 456-7890"}</p>
           </div>
-          <div className="rounded-xl bg-[#161616] p-4 shadow">
-            <p className="text-sm text-[#a9a9a9]">Website</p>
-            <p className="font-medium break-all">{profileData?.websiteLink || "citycab.rides"}</p>
+          <div className="rounded-xl bg-white p-4 shadow">
+            <p className="text-sm text-[#5c6b80]">Website</p>
+            <p className="font-medium break-all">{profileData?.websiteLink || "mikejohnson.fitness"}</p>
           </div>
-          <div className="rounded-xl bg-[#161616] p-4 shadow">
-            <p className="text-sm text-[#a9a9a9]">Location</p>
-            <p className="font-medium break-all">{profileData?.location || "NYC, USA"}</p>
+          <div className="rounded-xl bg-white p-4 shadow">
+            <p className="text-sm text-[#5c6b80]">Location</p>
+            <p className="font-medium break-all">{profileData?.location || "Miami, FL"}</p>
           </div>
         </section>
 
         <section className="mt-12">
           <h2 className="text-2xl font-semibold">Our Services</h2>
-          <div className="mt-6 grid sm:grid-cols-3 gap-6">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {services.map((s, index) => (
-              <div key={index} className="rounded-2xl bg-[#161616] p-6 shadow">
+              <div key={index} className="rounded-2xl bg-white p-6 shadow">
                 <div className="w-10 h-10 rounded-lg" style={{ backgroundColor: accent }}>
-                  <div className="w-full h-full flex items-center justify-center text-black text-lg">🚕</div>
+                  <div className="w-full h-full flex items-center justify-center text-white text-lg">💪</div>
                 </div>
                 <h3 className="mt-4 font-medium">{s.title}</h3>
-                <p className="mt-2 text-sm text-[#a9a9a9]">{s.desc}</p>
+                <p className="mt-2 text-sm text-[#5c6b80]">{s.desc}</p>
               </div>
             ))}
           </div>
         </section>
 
         <section className="mt-12">
-          <h2 className="text-2xl font-semibold">Make an Appointment</h2>
-          <div className="mt-4 rounded-2xl bg-[#161616] p-6 shadow">
+          <h2 className="text-2xl font-semibold">Book a Session</h2>
+          <div className="mt-4 rounded-2xl bg-white p-6 shadow">
             {renderAppointmentForm(handleAppointment, appointmentMessage, appointmentError, appointmentLoading, slot, setSlot, accent)}
           </div>
         </section>
 
         <section className="mt-12">
           <h2 className="text-2xl font-semibold">Gallery</h2>
-          <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {gallery.map((g, i) => (
               <img 
                 key={i} 
                 src={g.src} 
                 onError={(e)=>{e.currentTarget.src=g.fallback}} 
-                alt="Taxi" 
+                alt="Fitness training" 
                 className="rounded-xl h-36 sm:h-44 w-full object-cover shadow cursor-pointer" 
                 onClick={() => openGallery(i)}
               />
@@ -194,14 +205,14 @@ function TaxiTemplate({ profileData }) {
         </section>
 
         <section className="mt-12">
-          <h2 className="text-2xl font-semibold">Products</h2>
-          <div className="mt-6 grid sm:grid-cols-2 gap-6">
+          <h2 className="text-2xl font-semibold">Programs</h2>
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
             {products.map((p, i) => (
-              <div key={i} className="rounded-2xl bg-[#161616] shadow overflow-hidden">
-                <img src={p.img.src} onError={(e)=>{e.currentTarget.src=p.img.fallback}} alt={p.name} className="w-full h-40 object-cover" />
+              <div key={i} className="rounded-2xl bg-white shadow overflow-hidden">
+                <img src={p.img?.src} onError={(e)=>{e.currentTarget.src=p.img?.fallback}} alt={p.name} className="w-full h-40 object-cover" />
                 <div className="p-4">
                   <p className="font-medium">{p.name}</p>
-                  <p className="text-sm text-[#a9a9a9]">{p.price}</p>
+                  <p className="text-sm text-[#5c6b80]">{p.price}</p>
                 </div>
               </div>
             ))}
@@ -212,7 +223,7 @@ function TaxiTemplate({ profileData }) {
           <h2 className="text-2xl font-semibold">Testimonials</h2>
           <div className="mt-6 space-y-6">
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="rounded-2xl bg-[#161616] p-6 shadow flex items-start gap-4">
+              <div key={index} className="rounded-2xl bg-white p-6 shadow flex items-start gap-4">
                 <div className="w-16 h-16 rounded-xl flex items-center justify-center" style={{ backgroundColor: accent, color: '#fff' }}>
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
@@ -222,11 +233,11 @@ function TaxiTemplate({ profileData }) {
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="font-medium">{testimonial.name}</h3>
-                      <p className="text-sm text-[#a9a9a9]">{testimonial.role}</p>
+                      <p className="text-sm text-[#5c6b80]">{testimonial.role}</p>
                     </div>
                     {renderRating(testimonial.rating)}
                   </div>
-                  <p className="mt-3 text-[#a9a9a9]">{testimonial.feedback}</p>
+                  <p className="mt-3 text-[#5c6b80]">{testimonial.feedback}</p>
                 </div>
               </div>
             ))}
@@ -246,4 +257,4 @@ function TaxiTemplate({ profileData }) {
   )
 }
 
-export default TaxiTemplate
+export default FitnessTrainerTemplate

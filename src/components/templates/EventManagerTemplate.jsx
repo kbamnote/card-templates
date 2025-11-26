@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { Instagram, Facebook, Twitter, Linkedin, Phone, Mail, MapPin, Globe, Calendar } from 'lucide-react'
+import { Instagram, Facebook, Twitter, Linkedin, Youtube, Phone, Mail, MapPin, Globe, Calendar } from 'lucide-react'
 import { handleAppointmentSubmit, renderAppointmentForm } from './AppointmentUtils'
+import GalleryModal from './GalleryModal'
 
 function EventManagerTemplate({ profileData }) {
   const accent = profileData?.accentColor || '#e97e54'
@@ -75,6 +76,28 @@ function EventManagerTemplate({ profileData }) {
   // Render star ratings
   const renderStars = (rating) => {
     return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+  };
+
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+
+  const openGallery = (index) => {
+    setSelectedImageIndex(index);
+  };
+
+  const closeGallery = () => {
+    setSelectedImageIndex(null);
+  };
+
+  const nextImage = () => {
+    setSelectedImageIndex((prevIndex) => 
+      prevIndex === null ? 0 : (prevIndex + 1) % gallery.length
+    );
+  };
+
+  const prevImage = () => {
+    setSelectedImageIndex((prevIndex) => 
+      prevIndex === null ? 0 : (prevIndex - 1 + gallery.length) % gallery.length
+    );
   };
 
   return (
@@ -170,7 +193,14 @@ function EventManagerTemplate({ profileData }) {
           <h2 className="text-2xl font-semibold">Gallery</h2>
           <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
             {gallery.map((g, i) => (
-              <img key={i} src={g.src} onError={(e)=>{e.currentTarget.src=g.fallback}} alt="Event" className="rounded-xl h-36 sm:h-44 w-full object-cover shadow" />
+              <img 
+                key={i} 
+                src={g.src} 
+                onError={(e)=>{e.currentTarget.src=g.fallback}} 
+                alt="Event" 
+                className="rounded-xl h-36 sm:h-44 w-full object-cover shadow cursor-pointer" 
+                onClick={() => openGallery(i)}
+              />
             ))}
           </div>
         </section>
