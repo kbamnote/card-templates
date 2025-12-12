@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { login, profileRead } from '../../utils/Api';
+import { login, profileRead, studentProfileRead } from '../../utils/Api';
 import Cookies from 'js-cookie';
 import logo from '../../assets/br-logo.png'
 
@@ -12,6 +12,22 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
+  // Function to decode JWT token (using built-in JavaScript functions)
+  const decodeJWT = (token) => {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      
+      return JSON.parse(jsonPayload);
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      return null;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -21,18 +37,54 @@ const LoginPage = () => {
       const response = await login({ email, password });
       
       if (response.data.success) {
-        // Store token in cookies
+        // Store token and role in cookies
         Cookies.set('card-token', response.data.data.token, { expires: 7 });
+        const userRole = response.data.data.user.role;
+        Cookies.set('card-role', userRole, { expires: 7 });
         
-        // Check if user has completed onboarding
+        // For students, redirect directly to student onboarding or student landing page
+        if (userRole === 'student') {
+          try {
+            // Check if student profile exists
+            const profileResponse = await studentProfileRead();
+            if (profileResponse.data.success) {
+              const profile = profileResponse.data.data;
+              
+              // Check if essential fields are filled for students
+              const isCompleted = profile.fullName && profile.email;
+              if (isCompleted) {
+                // Student has completed onboarding, redirect to student landing page
+                navigate('/student');
+              } else {
+                // Student needs to complete onboarding
+                navigate('/student-onboarding');
+              }
+            } else {
+              // No profile data, redirect to student onboarding
+              navigate('/student-onboarding');
+            }
+          } catch (profileErr) {
+            // If it's a 404 error (profile not found), redirect to student onboarding
+            if (profileErr.response && profileErr.response.status === 404) {
+              navigate('/student-onboarding');
+            } else {
+              // For other errors, redirect to student onboarding as well
+              navigate('/student-onboarding');
+            }
+          }
+          return;
+        }
+        
+        // For clients, check if they have completed onboarding
         try {
           const profileResponse = await profileRead();
           if (profileResponse.data.success) {
             const profile = profileResponse.data.data;
             
-            // Check if essential fields are filled
-            if (profile.name && profile.profession) {
-              // User has completed onboarding, redirect to home
+            // Check if essential fields are filled for clients
+            const isCompleted = profile.name && profile.profession;
+            if (isCompleted) {
+              // User has completed onboarding, redirect to landing page
               navigate('/');
             } else {
               // User needs to complete onboarding
@@ -131,7 +183,7 @@ const LoginPage = () => {
                 >
                   {showPassword ? (
                     <svg className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
                   ) : (
                     <svg className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">

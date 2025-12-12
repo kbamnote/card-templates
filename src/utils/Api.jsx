@@ -11,6 +11,54 @@ const Apiauth = axios.create({
   baseURL: BASE_URL,
 });
 
+// Function to decode JWT token (using built-in JavaScript functions)
+const decodeJWT = (token) => {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    
+    return JSON.parse(jsonPayload);
+  } catch (error) {
+    console.error("Error decoding token:", error);
+    return null;
+  }
+};
+
+// Function to get user role from JWT token
+export const getUserRole = () => {
+  try {
+    const token = Cookies.get("card-token");
+    if (!token) return null;
+    
+    const decoded = decodeJWT(token);
+    return decoded?.role || 'client'; // Default to client if no role specified
+  } catch (error) {
+    console.error("Error getting user role:", error);
+    return 'client'; // Default to client if error
+  }
+};
+
+// Function to get appropriate profile read function based on user role
+export const getCurrentUserProfileRead = () => {
+  const role = getUserRole();
+  return role === 'student' ? studentProfileRead : profileRead;
+};
+
+// Function to get appropriate profile create function based on user role
+export const getCurrentUserProfileCreate = () => {
+  const role = getUserRole();
+  return role === 'student' ? studentProfileCreate : profileCreate;
+};
+
+// Function to get appropriate profile update function based on user role
+export const getCurrentUserProfileUpdate = () => {
+  const role = getUserRole();
+  return role === 'student' ? studentProfileUpdate : profileUpdate;
+};
+
 Api.interceptors.request.use(
   (config) => {
     const token = Cookies.get("card-token");
@@ -31,6 +79,7 @@ Api.interceptors.response.use(
     if (error.response?.status === 401) {
       // Token expired or invalid
       Cookies.remove("card-token");
+      Cookies.remove("card-role");
       window.location.href = "/login";
     }
     return Promise.reject(error);
@@ -68,6 +117,66 @@ export const updateBannerImg = (formData) =>
   Api.put("/profile/upload/banner-image", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
+
+// ============== Student Profile ==============
+export const studentProfileCreate = (post) => Api.post("/student-profile/", post);
+export const studentProfileRead = () => Api.get("/student-profile/me");
+export const studentProfileReadPublic = (userId) => Api.get(`/student-profile/public/${userId}`);
+export const studentProfileUpdate = (data) => Api.put(`/student-profile/me`, data, {
+  headers: { "Content-Type": "application/json" }
+});
+export const studentProfileDelete = () => Api.delete("/student-profile/me");
+export const uploadStudentProfilePic = (formData) =>
+  Api.post("/student-profile/upload/profile-pic", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+export const uploadStudentBannerPic = (formData) =>
+  Api.post("/student-profile/upload/banner-pic", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+export const updateStudentProfilePic = (formData) =>
+  Api.put("/student-profile/upload/profile-pic", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+export const updateStudentBannerPic = (formData) =>
+  Api.put("/student-profile/upload/banner-pic", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+
+// ============== Student Skills ==============
+export const studentSkillCreate = (post) => Api.post("/student-skills/", post);
+export const studentSkillsRead = () => Api.get("/student-skills/my");
+export const studentSkillReadById = (id) => Api.get(`/student-skills/${id}`);
+export const studentSkillUpdate = (id, data) => Api.put(`/student-skills/${id}`, data);
+export const studentSkillDelete = (id) => Api.delete(`/student-skills/${id}`);
+
+// ============== Student Education ==============
+export const studentEducationCreate = (post) => Api.post("/student-educations/", post);
+export const studentEducationsRead = () => Api.get("/student-educations/my");
+export const studentEducationReadById = (id) => Api.get(`/student-educations/${id}`);
+export const studentEducationUpdate = (id, data) => Api.put(`/student-educations/${id}`, data);
+export const studentEducationDelete = (id) => Api.delete(`/student-educations/${id}`);
+
+// ============== Student Experience ==============
+export const studentExperienceCreate = (post) => Api.post("/student-experiences/", post);
+export const studentExperiencesRead = () => Api.get("/student-experiences/my");
+export const studentExperienceReadById = (id) => Api.get(`/student-experiences/${id}`);
+export const studentExperienceUpdate = (id, data) => Api.put(`/student-experiences/${id}`, data);
+export const studentExperienceDelete = (id) => Api.delete(`/student-experiences/${id}`);
+
+// ============== Student Projects ==============
+export const studentProjectCreate = (post) => Api.post("/student-projects/", post);
+export const studentProjectsRead = () => Api.get("/student-projects/my");
+export const studentProjectReadById = (id) => Api.get(`/student-projects/${id}`);
+export const studentProjectUpdate = (id, data) => Api.put(`/student-projects/${id}`, data);
+export const studentProjectDelete = (id) => Api.delete(`/student-projects/${id}`);
+
+// ============== Student Achievements ==============
+export const studentAchievementCreate = (post) => Api.post("/student-achievements/", post);
+export const studentAchievementsRead = () => Api.get("/student-achievements/my");
+export const studentAchievementReadById = (id) => Api.get(`/student-achievements/${id}`);
+export const studentAchievementUpdate = (id, data) => Api.put(`/student-achievements/${id}`, data);
+export const studentAchievementDelete = (id) => Api.delete(`/student-achievements/${id}`);
 
 // ============== Services ==============
 export const serviceCreate = (post) => Api.post("/services/", post);

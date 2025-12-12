@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { profileRead, profileCreate, uploadProfileImg, uploadBannerImg, serviceCreate, uploadGalleryImg, uploadProductDetails } from '../../utils/Api';
+import { 
+  profileCreate, 
+  profileRead, 
+  profileUpdate,
+  uploadProfileImg, 
+  uploadBannerImg,
+  serviceCreate, 
+  uploadGalleryImg, 
+  uploadProductDetails 
+} from '../../utils/Api';
 import ProfileForm from '../forms/ProfileForm';
 import ServicesForm from '../forms/ServicesForm';
 import GalleryForm from '../forms/GalleryForm';
@@ -35,9 +44,11 @@ const OnboardingPage = () => {
           const profile = response.data.data;
           
           // Check if essential fields are filled
-          if (profile.name && profile.profession) {
-            // User has completed onboarding, redirect to home
-            navigate('/');
+          // For clients, check name and profession
+          const isCompleted = profile.name && profile.profession;
+          if (isCompleted) {
+            // User has completed onboarding, redirect to dashboard
+            navigate('/dashboard');
             return;
           }
         }
@@ -87,7 +98,8 @@ const OnboardingPage = () => {
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
         const formData = new FormData();
-        formData.append('profileImg', file); // Changed from 'profileImage' to 'profileImg' to match backend
+        formData.append('profileImg', file);
+        
         const response = await uploadProfileImg(formData);
         if (response.data.success) {
           return response.data.data.profileImg;
@@ -119,7 +131,8 @@ const OnboardingPage = () => {
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
         const formData = new FormData();
-        formData.append('bannerImg', file); // Changed from 'bannerImage' to 'bannerImg' to match backend
+        formData.append('bannerImg', file);
+        
         const response = await uploadBannerImg(formData);
         if (response.data.success) {
           return response.data.data.bannerImg;
@@ -198,7 +211,7 @@ const OnboardingPage = () => {
         setProductsData(prev => [...prev, response.data.data]);
         // Complete onboarding after a short delay
         setTimeout(() => {
-          navigate('/');
+          navigate('/dashboard');
         }, 1500);
       } else {
         setError(response.data.message || 'Failed to save product');

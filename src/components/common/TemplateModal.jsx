@@ -1,7 +1,9 @@
 import React from 'react';
 import TemplateSelector from '../templates/TemplateSelector';
+import StudentTemplateSelector from '../student-templates/StudentTemplateSelector';
+import Cookies from 'js-cookie';
 
-const TemplateModal = ({ isOpen, onClose, currentTemplate, onTemplateChange }) => {
+const TemplateModal = ({ isOpen, onClose, currentTemplate, onTemplateChange, userRole }) => {
   if (!isOpen) return null;
 
   const handleTemplateSelect = (templateId) => {
@@ -13,22 +15,21 @@ const TemplateModal = ({ isOpen, onClose, currentTemplate, onTemplateChange }) =
     <div className="fixed inset-0 z-50 overflow-y-auto">
       {/* Background overlay */}
       <div 
-        className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+        className="fixed inset-0 transition-opacity"
         onClick={onClose}
       ></div>
 
       {/* Modal content */}
       <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-        {/* This element is to trick the browser into centering the modal contents. */
-}
+        {/* This element is to trick the browser into centering the modal contents. */}
         <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
-        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
-          <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+        <div className="inline-block align-bottom bg-black rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+          <div className="bg-black px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
             <div className="sm:flex sm:items-start">
               <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-2xl leading-6 font-bold text-gray-900" id="modal-title">
+                  <h3 className="text-2xl leading-6 font-bold text-gray-500" id="modal-title">
                     Choose Your Template
                   </h3>
                   <button
@@ -42,15 +43,22 @@ const TemplateModal = ({ isOpen, onClose, currentTemplate, onTemplateChange }) =
                   </button>
                 </div>
                 <div className="mt-2">
-                  <TemplateSelector 
-                    currentTemplate={currentTemplate} 
-                    onTemplateChange={handleTemplateSelect} 
-                  />
+                  {userRole === 'student' ? (
+                    <StudentTemplateSelector 
+                      currentTemplate={currentTemplate} 
+                      onTemplateChange={handleTemplateSelect} 
+                    />
+                  ) : (
+                    <TemplateSelector 
+                      currentTemplate={currentTemplate} 
+                      onTemplateChange={handleTemplateSelect} 
+                    />
+                  )}
                 </div>
               </div>
             </div>
           </div>
-          <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+          <div className="bg-black px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
             <button
               type="button"
               className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"

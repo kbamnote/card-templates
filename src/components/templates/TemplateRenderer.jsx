@@ -20,6 +20,13 @@ import MobileTechConsultant from './MobileTechConsultant';
 import MobileWellnessCoach from './MobileWellnessCoach';
 import MobileCreativeStudio from './MobileCreativeStudio';
 
+// Import student templates
+import StudentBaseTemplate from '../student-templates/StudentBaseTemplate';
+import StudentPortfolioTemplate from '../student-templates/StudentPortfolioTemplate';
+import StudentMinimalTemplate from '../student-templates/StudentMinimalTemplate';
+import StudentCreativeTemplate from '../student-templates/StudentCreativeTemplate';
+import StudentDarkTemplate from '../student-templates/StudentDarkTemplate';
+
 const TemplateRenderer = ({ templateId, profileData }) => {
   const TemplateComponent = useMemo(() => {
     const templateMap = {
@@ -42,7 +49,13 @@ const TemplateRenderer = ({ templateId, profileData }) => {
       template20: MobileFashionBoutique,
       template21: MobileTechConsultant,
       template22: MobileWellnessCoach,
-      template23: MobileCreativeStudio
+      template23: MobileCreativeStudio,
+      // Student templates
+      template111: StudentBaseTemplate,
+      template112: StudentPortfolioTemplate,
+      template113: StudentMinimalTemplate,
+      template114: StudentCreativeTemplate,
+      template115: StudentDarkTemplate
     };
     
     return templateMap[templateId] || CeoTemplate; // Default to CeoTemplate
